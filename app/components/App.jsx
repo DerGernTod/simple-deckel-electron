@@ -2,12 +2,17 @@ import React from 'react';
 import {ProductListContainer} from '../containers/product-list-container';
 import {CustomerListContainer} from '../containers/customer-list-container';
 import { CustomerItemListContainer } from '../containers/customer-item-list-container';
+import { UserConfigListContainer } from '../containers/user-config-list-container';
 
 export default () => 
       <div id="content">
         <div>
           <h1>Products</h1>
           <ProductListContainer />
+        </div>
+        <div>
+          <h1>Users</h1>
+          <UserConfigListContainer />
         </div>
         <div>
           <h1>Customers</h1>
