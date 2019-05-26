@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { User } from "./User";
+import { User } from "../User"; 
 export const UserConfigList = ({ users, onAdd }) => 
     <ul>
         {

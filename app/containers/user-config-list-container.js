@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { UserConfigList } from "../components/UserConfigList";
+import { UserConfigList } from "../components/lists/UserConfigList";
 
 const mapStateToProps = (state) => ({
     users: state.users.list

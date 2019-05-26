@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { CustomerList } from "../components/CustomerList";
+import { CustomerList } from "../components/lists/CustomerList"; 
 import { selectCustomer } from "../state/actions/customer-actions";
 
 const mapStateToProps = (state) => ({

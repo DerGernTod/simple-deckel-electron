@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Customer } from "./Customer";
+import { Customer } from "../Customer"; 
 export const CustomerList = ({ customers, onCustomerSelect }) => 
-    <ul>
+    <ul className="customer-list flex-list">
         {
             customers.map(customer => 
                 <Customer

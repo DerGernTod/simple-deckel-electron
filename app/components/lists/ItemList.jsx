@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Item } from "./Item";
+import { Item } from "../Item"; 
 
 export const ItemList = ({ items, onItemClick }) => 
-    <ul>
+    <ul className="item-list flex-list">
         {
             items.map(item => 
                 <Item
@@ -22,7 +22,6 @@ ItemList.propTypes = {
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         amount: PropTypes.number.isRequired,
-        onClick: PropTypes.func.isRequired
     })),
     onItemClick: PropTypes.func.isRequired
 };
