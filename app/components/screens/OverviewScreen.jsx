@@ -2,7 +2,7 @@ import React from 'react';
 import { CustomerListContainer } from '../../containers/customer-list-container';
 import { CustomerItemListContainer } from '../../containers/customer-item-list-container';
 
-export const OverviewScreen = () => (
+export const OverviewScreen = (props) => (
     <React.Fragment>
         <div className="column full-height">
             <div className="panel full-height">
@@ -11,7 +11,7 @@ export const OverviewScreen = () => (
         </div>
         <div className="column full-height">
             <div className="panel full-height overview-mid-panel">
-                <CustomerItemListContainer />
+                <CustomerItemListContainer selectedCustomer={props.selectedCustomer} />
                 <div className="flex item-controls">
                     <button>+</button>
                     <button>Zahlung hinzufügen</button>
@@ -27,8 +27,8 @@ export const OverviewScreen = () => (
                     <button>Benutzer verwalten</button>
                 </div>
                 <div className="flex">
-                    <button>Beenden</button>
                     <div>Zuletzt gespeichert: Nie</div>
+                    <button>Beenden</button>
                 </div>
             </div>
         </div>

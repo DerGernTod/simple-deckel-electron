@@ -1,9 +1,9 @@
 import { connect } from "react-redux";
 import { ItemList } from "../components/lists/ItemList";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     
-    const selectedCustomer = state.customers.list.find(customer => customer.id === state.customers.selectedId);
+    const selectedCustomer = state.customers.list.find(customer => customer.id === Number(ownProps.selectedCustomer));
     return {
         items: selectedCustomer ? selectedCustomer.items : []
     };

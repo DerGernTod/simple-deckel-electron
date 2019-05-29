@@ -15,6 +15,10 @@ export const ItemList = ({ items, onItemClick }) =>
                     onClick = {() => onItemClick(item.id)}
                 />)
         }
+        
+        <li className="sum">
+            <div>Summe</div><div>some €</div>
+        </li>
     </ul>;
 
 ItemList.propTypes = {

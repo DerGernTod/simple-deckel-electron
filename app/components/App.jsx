@@ -5,7 +5,7 @@ import { CustomerItemListContainer } from '../containers/customer-item-list-cont
 import { UserConfigListContainer } from '../containers/user-config-list-container';
 import { OverviewScreen } from './screens/OverviewScreen';
 
-export default () => 
+export default ({ match: { params }}) => 
       <div id="content" className="flex">
-        <OverviewScreen />
+        <OverviewScreen selectedCustomer={params.selectedCustomer} />
       </div>;
