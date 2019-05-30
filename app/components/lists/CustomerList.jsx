@@ -6,9 +6,8 @@ export const CustomerList = ({ customers }) =>
     <ul className="customer-list flex-list">
         {
             customers.map(customer => 
-                <li>
+                <li key = {customer.id}>
                     <NavLink
-                        key = {customer.id}
                         to = {`/${customer.id}`}
                         activeClassName = 'active'
                     >
