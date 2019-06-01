@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Item } from "../Item"; 
+import { Item } from "../utils/Item"; 
 
 export const ItemList = ({ items, onItemClick }) => 
     <ul className="item-list flex-list">

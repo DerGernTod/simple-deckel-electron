@@ -1,16 +1,11 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 export class Popup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isVisible: props.isVisible
+            isVisible: false
         }
-    }
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            isVisible: nextProps.isVisible
-        });
     }
     hide() {
         if (this.props.onHide) {
@@ -19,6 +14,17 @@ export class Popup extends React.Component {
         this.setState({
             isVisible: false
         });
+    }
+    show() {
+        this.setState({
+            isVisible: true
+        });
+    }
+    getContent() {
+        return (<div>{this.props.children}</div>);
+    }
+    getButtons() {
+        return (<div><button onClick={() => this.hide()}>Schließen</button></div>)
     }
     render() {
         const props = this.props;
@@ -33,9 +39,16 @@ export class Popup extends React.Component {
             <div onClick={() => this.hide()} className='popup-underlay' style={style}>
                 <div className='popup' onClick={(e) => e.stopPropagation()} style={popupSize}>
                     <div>{props.title}</div>
-                    <div>{props.children}</div>
+                    {this.getContent()}
+                    {this.getButtons()}
                 </div>
             </div>
         );
     }
 } 
+
+Popup.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
+    onHide: PropTypes.func
+};

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Product } from "../Product"; 
+import { Product } from "../utils/Product"; 
 export const ProductList = ({ products, onAdd }) => 
     <ul>
         {

@@ -1,36 +1,42 @@
 import React from 'react';
 import { CustomerListContainer } from '../../containers/customer-list-container';
 import { CustomerItemListContainer } from '../../containers/customer-item-list-container';
-import { Popup } from '../Popup';
+import { LoginPopup } from '../utils/LoginPopup';
+import { Popup } from "../utils/Popup";
 
 export class OverviewScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            popupVisible: false,
-            popupTitle: '',
-            onPopupAccepted: () => void 0
+            currentLoginAction: () => void 0
         };
     }
-    onPopupHide() {
-        this.setState({
-            popupVisible: false
-        });
+    onLoginSuccessful() {
+        this.state.currentLoginAction();
     }
-    showPopup(title, callback) {
+    onItemsButtonClick(itemButton) {
+        if (itemButton === 'basket') {
+            this.refs.basketPopup.show();
+        } else {
+            this.setState({
+                currentLoginAction: () => this.refs[`${itemButton}Popup`].show()
+            });
+            this.refs.loginPopup.show();
+        }
+    }
+    resetLoginAction() {
         this.setState({
-            popupVisible: true,
-            popupTitle: title,
-            onPopupAccepted: callback
+            currentLoginAction: () => void 0
         });
     }
     render() {
         const props = this.props;
         return (
             <React.Fragment>
-                <Popup onHide={() => this.onPopupHide()} isVisible={this.state.popupVisible} title={this.state.popupTitle}>
-                    <div>some popup text</div>
-                </Popup>
+                <LoginPopup ref='loginPopup' onConfirmed={() => this.onLoginSuccessful()} title='Login erforderlich' />
+                <Popup ref='basketPopup' onHide={() => this.resetLoginAction()} />
+                <Popup ref='paymentPopup' onHide={() => this.resetLoginAction()} />
+                <Popup ref='historyPopup' onHide={() => this.resetLoginAction()} />
                 <div className="column full-height">
                     <div className="panel full-height">
                         <CustomerListContainer />
@@ -40,9 +46,9 @@ export class OverviewScreen extends React.Component {
                     <div className="panel full-height overview-mid-panel">
                         <CustomerItemListContainer selectedCustomer={props.selectedCustomer} />
                         <div className="flex item-controls">
-                            <button onClick={() => this.showPopup('Eintrag hinzufügen', () => console.log('added!'))}>+</button>
-                            <button>Zahlung hinzufügen</button>
-                            <button>Vergangene Zahlungen</button>
+                            <button onClick={() => this.onItemsButtonClick('basket')}>+</button>
+                            <button onClick={() => this.onItemsButtonClick('payment')}>Zahlung hinzufügen</button>
+                            <button onClick={() => this.onItemsButtonClick('history')}>Vergangene Zahlungen</button>
                         </div>
                     </div>
                 </div>
