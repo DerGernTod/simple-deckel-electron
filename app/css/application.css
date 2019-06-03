@@ -230,10 +230,13 @@ input[type=password].focused {
 }
 .customer-list {
   height: 100%;
+  overflow: auto;
 }
 .customer-list li {
   padding: 0;
-  height: 80px;
+  flex-basis: 60px;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .customer-list li a {
   height: 100%;
