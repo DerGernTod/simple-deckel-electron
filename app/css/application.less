@@ -127,9 +127,12 @@ input[type=text], input[type=password] {
 
 .customer-list {
     height: 100%;
+    overflow: auto;
     li {
         padding:  0;
-        height: 80px;
+        flex-basis: 60px;
+        flex-grow: 0;
+        flex-shrink: 0;
         a {
             height: 100%;
             width: 100%;
