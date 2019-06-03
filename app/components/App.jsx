@@ -1,7 +1,9 @@
 import React from 'react';
-import { OverviewScreen } from './screens/OverviewScreen';
+import { OverviewScreenContainer } from '../containers/overview-screen-container';
+import { GermanKeyboardContainer } from '../containers/keyboard-container';
 
 export default ({ match: { params }}) => 
       <div id="content" className="flex">
-        <OverviewScreen selectedCustomer={params.selectedCustomer} />
+        <OverviewScreenContainer selectedCustomer={params.selectedCustomer} />
+        <GermanKeyboardContainer />
       </div>;

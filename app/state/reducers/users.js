@@ -4,7 +4,9 @@ const initialState = {
     list: [{
         id: 0,
         name: 'hans',
-        password: 'wurst'
+        password: 'wurst',
+        createdBy: '',
+        timestamp: 0
     }],
     loggedInUser: -1
 };

@@ -28,6 +28,8 @@
     "brunch": "^2",
     "clean-css-brunch": "^2",
     "electron": "^5.0.1",
+    "react-simple-keyboard": "^1.23.0",
+    "simple-keyboard-layouts": "^1.5.2",
     "uglify-js-brunch": "^2"
   }
 }

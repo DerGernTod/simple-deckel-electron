@@ -1,4 +1,5 @@
-@default-font-size: 18pt;
+@import "./simple-keyboard.less";
+@default-font-size: 18pt; 
 
 * {
     padding: 0;
@@ -59,6 +60,9 @@ input[type=text], input[type=password] {
     height: 40px;
     padding: 5px;
     font-size: 13pt;
+    &.focused {
+        border: 2px solid lightskyblue;
+    }
 }
 
 .popup-underlay {
@@ -102,11 +106,12 @@ input[type=text], input[type=password] {
             &:first-child {
                 @lightBlack: lighten(black, 25%);
                 color: @lightBlack;
-                height: 70px;
                 padding: 0 0 10px;
                 margin: 0 0 10px;
                 text-align: center;
-                flex-basis: content;
+                flex-basis: 45px;
+                flex-grow: 0;
+                flex-shrink: 0;
                 border-bottom: 1px solid @lightBlack;
             }
             &:last-child {

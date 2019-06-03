@@ -3784,6 +3784,11 @@ react-router@5.0.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
+react-simple-keyboard@^1.23.0:
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/react-simple-keyboard/-/react-simple-keyboard-1.23.0.tgz#84dc6b8ea43adc80695dd64260b254f417675c33"
+  integrity sha512-EbB/xc6IMSTEfDBTR/D2C5+8lKhtnWvqq3LTRAkEgwLNSsT5+xI/7Oe5a2EUdK5ZViz4x2KuaUZwuFm/52YVLg==
+
 react@^16.8.3:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
@@ -4163,6 +4168,11 @@ signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
+
+simple-keyboard-layouts@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/simple-keyboard-layouts/-/simple-keyboard-layouts-1.5.2.tgz#4988bd5f9598f0fcb230b71fd218bd51bd27f234"
+  integrity sha512-M+0Kg/U5jo8c6OYi2ix9dY3xE86GLCWVTPT5yp6tKiH/g51he+OkVv7BrSWF5FdCBLQPJ9iT4hsu7PuiQCHx6w==
 
 since-app-start@~0.3:
   version "0.3.3"

@@ -1,22 +1,24 @@
 import React from 'react';
 import { Popup } from "./Popup";
 import PropTypes from "prop-types";
-
+import { VKeyboardTextInputContainer } from '../../containers/utils/vkeyboard-text-input-container';
 export class LoginPopup extends Popup {
     constructor(props) {
         super(props);
         this.state = {
             ...this.state,
-            password: '',
-            username: '',
             errors: []
         };
     }
+    componentDidUpdate(oldProps, oldState) {
+        if (this.state.isVisible && !oldState.isVisible) {
+            this.usernameInput.focus();
+        }
+    }
     hide() {
         super.hide();
-        this.setState({
-            password: ''
-        });
+        this.passwordInput.reset();
+        this.props.updateKeyboardTarget('', () => void 0, '');
     }
     getButtons() {
         return (
@@ -28,15 +30,25 @@ export class LoginPopup extends Popup {
     }
     validate() {
         const errors = [];
-        if (this.state.password && this.state.username) {
-            this.props.onConfirmed(this.state.username);
-            this.hide();
-            return;
-        }
-        if (!this.state.username) {
+        const username = this.usernameInput.getValue();
+        const password = this.passwordInput.getValue();
+        if (!username) {
             errors.push('Bitte Benutzername angeben.');
         }
-        if (!this.state.password) {
+        const foundUser = this.props.users.filter(user => user.name === username)[0];
+        if (username && !foundUser) {
+            errors.push('Unbekannter Benutzer.')
+        } else if (foundUser) {
+            // todo: hash pw here
+            const hashedPw = password;
+            if (foundUser.password === hashedPw) {
+                this.props.onConfirmed(foundUser.name);
+                this.hide();
+            } else if (hashedPw) {
+                errors.push('Falsches Passwort.');
+            }
+        }
+        if (!password) {
             errors.push('Bitte Passwort angeben.');
         }
         this.setState({
@@ -48,37 +60,28 @@ export class LoginPopup extends Popup {
             errors: []
         });
     }
-    handleChange(evt) {
-        this.setState({
-            [evt.target.id.substr(12)]: evt.target.value
-        });
-    }
     getContent() {
         return (
             <div className='login-popup'>
                 <div>
                     <label htmlFor='login-popup-username'>Benutzer</label>
-                    <input type='text'
+                    <VKeyboardTextInputContainer type='text'
                         id='login-popup-username'
+                        ref={input => this.usernameInput = input}
                         placeholder='z.B. Brucker'
-                        value={this.state.username}
-                        onFocus={() => this.resetErrors()}
-                        onChange={e => this.handleChange(e)}
-                    ></input>
+                        onFocus={e => this.resetErrors()}
+                    ></VKeyboardTextInputContainer>
                 </div>
                 <div>
                     <label htmlFor='login-popup-password'>Passwort</label>
-                    <input type='password'
+                    <VKeyboardTextInputContainer type='password'
                         id='login-popup-password'
+                        ref={input => this.passwordInput = input}
                         placeholder='z.B. ************'
-                        value={this.state.password}
-                        onFocus={() => this.resetErrors()}
-                        onChange={e => this.handleChange(e)}
-                    ></input>
+                        onFocus={e => this.resetErrors()}
+                    ></VKeyboardTextInputContainer>
                 </div>
                 <ul>{this.state.errors.map((error, index) => <li key={`err-${index}`}>{error}</li>)}</ul>
-                
-                
             </div>
         );
     }
@@ -86,5 +89,11 @@ export class LoginPopup extends Popup {
 
 LoginPopup.propTypes = {
     ...Popup.propTypes,
-    onConfirmed: PropTypes.func.isRequired
+    onConfirmed: PropTypes.func,
+    vkeyboardTarget: PropTypes.string.isRequired,
+    users: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        password: PropTypes.string.isRequired
+    })).isRequired
 };
