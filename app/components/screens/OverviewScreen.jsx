@@ -62,7 +62,7 @@ export class OverviewScreen extends React.Component {
                         </div>
                         <div className="flex">
                             <div>Zuletzt gespeichert: {this.props.lastSaved}</div>
-                            <button>Beenden</button>
+                            <button onClick={() => window.close()}>Beenden</button>
                         </div>
                     </div>
                 </div>
