@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomerListContainer } from '../../containers/customer-list-container';
 import { CustomerItemListContainer } from '../../containers/customer-item-list-container';
-import { Popup } from "../utils/Popup";
-import { LoginPopupContainer } from '../../containers/utils/login-popup-container';
+import { Popup } from "../utils/popups/Popup";
+import { LoginPopupContainer } from '../../containers/utils/popups/login-popup-container';
+import { CartPopupContainer } from '../../containers/utils/popups/cart-popup-container';
 
 export class OverviewScreen extends React.Component {
     constructor(props) {
@@ -16,8 +17,8 @@ export class OverviewScreen extends React.Component {
         this.state.currentLoginAction();
     }
     onItemsButtonClick(itemButton) {
-        if (itemButton === 'basket') {
-            this.refs.basketPopup.show();
+        if (itemButton === 'cart') {
+            this.cartPopup.show();
         } else {
             this.setState({
                 currentLoginAction: () => this.refs[`${itemButton}Popup`].show()
@@ -31,13 +32,13 @@ export class OverviewScreen extends React.Component {
         });
     }
     render() {
-        const props = this.props;
+        const hasCustomerId = !isNaN(this.props.selectedCustomerId);
         return (
             <React.Fragment>
                 <LoginPopupContainer ref={elem => this.loginPopup = elem} onConfirmed={() => this.onLoginSuccessful()} title='Login erforderlich' />
-                <Popup title='Warenkorb' width='100%' height='100%' ref='basketPopup' onHide={() => this.resetLoginAction()} />
-                <Popup ref='paymentPopup' onHide={() => this.resetLoginAction()} />
-                <Popup ref='historyPopup' width='100%' height='100%' onHide={() => this.resetLoginAction()} />
+                <CartPopupContainer ref={elem => this.cartPopup = elem} title='Warenkorb' width='100%' height='100%' />
+                <Popup ref='paymentPopup' />
+                <Popup ref='historyPopup' width='100%' height='100%' />
                 <div className="column full-height">
                     <div className="panel full-height">
                         <CustomerListContainer />
@@ -45,18 +46,18 @@ export class OverviewScreen extends React.Component {
                 </div>
                 <div className="column full-height">
                     <div className="panel full-height overview-mid-panel">
-                        <CustomerItemListContainer selectedCustomer={props.selectedCustomer} />
+                        <CustomerItemListContainer selectedCustomerId={hasCustomerId ? Number(this.props.selectedCustomerId) : -1} />
                         <div className="flex item-controls">
-                            <button onClick={() => this.onItemsButtonClick('basket')}>+</button>
-                            <button onClick={() => this.onItemsButtonClick('payment')}>Zahlung hinzufügen</button>
-                            <button onClick={() => this.onItemsButtonClick('history')}>Vergangene Zahlungen</button>
+                            <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('cart')}>+</button>
+                            <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('payment')}>Zahlung hinzufügen</button>
+                            <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('history')}>Vergangene Zahlungen</button>
                         </div>
                     </div>
                 </div>
                 <div className="column full-height">
                     <div className="full-height overview-controls flex">
                         <div className="flex">
-                            <button>Kunden verwalten</button>
+                            <button >Kunden verwalten</button>
                             <button>Produkte verwalten</button>
                             <button>Benutzer verwalten</button>
                         </div>
@@ -73,5 +74,5 @@ export class OverviewScreen extends React.Component {
 
 OverviewScreen.propTypes = {
     lastSaved: PropTypes.string.isRequired,
-    selectedCustomer: PropTypes.string
+    selectedCustomerId: PropTypes.string
 };

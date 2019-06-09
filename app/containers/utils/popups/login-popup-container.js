@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import { LoginPopup } from "../../components/utils/LoginPopup";
-import { changeKeyboardTarget } from "../../state/actions/status-actions";
+import { LoginPopup } from "../../../components/utils/popups/LoginPopup";
+import { changeKeyboardTarget } from "../../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
     return {

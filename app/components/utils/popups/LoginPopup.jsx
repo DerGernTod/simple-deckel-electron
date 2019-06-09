@@ -1,7 +1,7 @@
 import React from 'react';
 import { Popup } from "./Popup";
 import PropTypes from "prop-types";
-import { VKeyboardTextInputContainer } from '../../containers/utils/vkeyboard-text-input-container';
+import { VKeyboardTextInputContainer } from '../../../containers/utils/vkeyboard-text-input-container';
 export class LoginPopup extends Popup {
     constructor(props) {
         super(props);

@@ -1,4 +1,4 @@
-import { CUSTOMER_ADD, CUSTOMER_DELETE, CUSTOMER_UPDATE, CUSTOMER_SELECT } from "../actions";
+import { CUSTOMER_ADD, CUSTOMER_DELETE, CUSTOMER_UPDATE, CUSTOMER_SELECT, CUSTOMER_ITEMS_ADD } from "../actions";
 
 let nextCustomerId = 0;
 
@@ -33,11 +33,12 @@ export function updateCustomer(id, name, items) {
     };
 }
 
-export function selectCustomer(id) {
+export function addItems(customerId, items) {
     return {
-        type: CUSTOMER_SELECT,
+        type: CUSTOMER_ITEMS_ADD,
         payload: {
-            id
+            id: customerId,
+            items
         }
     };
 }

@@ -5,7 +5,7 @@ const mapStateToProps = (state) => ({
     lastSaved: state.status.lastSaved
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = () => ({
 });
 
 export const OverviewScreenContainer = connect(

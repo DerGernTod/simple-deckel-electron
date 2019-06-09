@@ -4,6 +4,6 @@ import { GermanKeyboardContainer } from '../containers/keyboard-container';
 
 export default ({ match: { params }}) => 
       <div id="content" className="flex">
-        <OverviewScreenContainer selectedCustomer={params.selectedCustomer} />
+        <OverviewScreenContainer selectedCustomerId={params.selectedCustomer} />
         <GermanKeyboardContainer />
       </div>;
