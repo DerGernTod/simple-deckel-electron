@@ -7,7 +7,7 @@ export const ItemList = ({ items, onItemClick }) => {
     return (
         <ul className="item-list flex-list">
             {
-                items.map(item => 
+                items.filter(item => !item.isPaid).map(item => 
                     <Item
                         key = {item.id}
                         name = {item.name}

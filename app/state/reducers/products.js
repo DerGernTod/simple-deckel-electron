@@ -1,11 +1,21 @@
 import {PRODUCT_DELETE, PRODUCT_ADD, PRODUCT_UPDATE} from '../actions'
 import { CATEGORIES } from '../../constants';
-const initialState = [{
-    id: 0,
-    name: 'Bier',
-    price: 3.50,
-    category: CATEGORIES.DRINKS
-}];
+const initialState = {
+    list: [{
+        id: 0,
+        name: 'Bier',
+        price: 3.50,
+        createdBy: 'Hans',
+        category: CATEGORIES.DRINKS
+    }, {
+        id: 1,
+        name: 'Spaghetti',
+        price: 6.50,
+        createdBy: 'Hans',
+        category: CATEGORIES.FOOD
+    }],
+    nextProductId: 2
+};
 
 export function products(state = initialState, action) {
     switch (action.type) {
