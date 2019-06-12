@@ -117,6 +117,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  user-select: none;
 }
 body,
 html,
@@ -227,6 +228,76 @@ input[type=password].focused {
   flex-direction: row;
   justify-content: space-between;
   height: 140px;
+}
+.cart-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.cart-popup .available-products {
+  flex-basis: 70%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.cart-popup .available-products ul {
+  width: 100%;
+}
+.cart-popup .available-products ul li {
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+.cart-popup .available-products ul li:not(:first-child) {
+  border: 1px solid whitesmoke;
+  display: flex;
+}
+.cart-popup .cart {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  margin: 20px 0;
+  flex-basis: 30%;
+}
+.cart-popup .cart li {
+  float: left;
+  margin-right: 20px;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+  min-width: 180px;
+  cursor: pointer;
+  border: 1px solid whitesmoke;
+}
+.cart-popup .cart li:last-child {
+  border: none;
+  cursor: default;
+  float: right;
+}
+.cat-Mahlzeiten {
+  background-color: lightsalmon;
+}
+.cat-Mahlzeiten:active {
+  background-color: #ffc4ad;
+}
+.cat-Getränke {
+  background-color: lightgreen;
+}
+.cat-Getränke:active {
+  background-color: #bcf5bc;
+}
+.cat-Sonstiges {
+  background-color: papayawhip;
+}
+.cat-Sonstiges:active {
+  background-color: #ffffff;
 }
 .customer-list {
   height: 100%;

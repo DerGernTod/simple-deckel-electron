@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const Item = ({ name, amount, price, category, onClick }) => 
     <li onClick = {onClick} className={`item cat-${category}`}>
-        <div>{amount} {name}</div><div>{price} €</div>
+        <div>{amount} {name}</div><div>{price.toFixed(2)} €</div>
     </li>;
 
 Item.propTypes = {

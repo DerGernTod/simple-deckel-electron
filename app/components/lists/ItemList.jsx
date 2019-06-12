@@ -19,7 +19,7 @@ export const ItemList = ({ items, onItemClick }) => {
             }
             
             <li className="sum">
-                <div>Summe</div><div>{sum > 0 ? '+' : ''}{sum} €</div>
+                <div>Summe</div><div>{sum > 0 ? '+' : ''}{sum.toFixed(2)} €</div>
             </li>
         </ul>
     );
