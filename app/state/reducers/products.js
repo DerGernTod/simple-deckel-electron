@@ -5,14 +5,16 @@ const initialState = {
         id: 0,
         name: 'Bier',
         price: 3.50,
-        createdBy: 'Hans',
-        category: CATEGORIES.DRINKS
+        createdBy: 0,
+        category: CATEGORIES.DRINKS,
+        timestamp: 1560461260985
     }, {
         id: 1,
         name: 'Spaghetti',
         price: 6.50,
-        createdBy: 'Hans',
-        category: CATEGORIES.FOOD
+        createdBy: 0,
+        category: CATEGORIES.FOOD,
+        timestamp: 1560461260985
     }],
     nextProductId: 2
 };

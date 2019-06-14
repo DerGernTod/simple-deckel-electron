@@ -6,14 +6,13 @@ const initialState = {
 		{
 			id: 0,
 			name: 'Hans Wurst',
-			createdBy: 'Hans',
+			createdBy: 0,
 			payments: [],
 			items: [
 				{
 					id: 0,
 					name: 'Irgendwas',
 					isPaid: false,
-					createdBy: 'Hans',
 					amount: 2,
 					price: 13.5,
 					category: CATEGORIES.MISC,
@@ -24,11 +23,11 @@ const initialState = {
 		{
 			id: 1,
 			name: 'Franz Ferdinand',
-			createdBy: 'Hans',
+			createdBy: 0,
 			payments: [{
                     id: 0,
                     amount: 22.30,
-                    createdBy: 'Hans',
+                    createdBy: 0,
                     timestamp: 1560461260985
 			}],
 			items: [
@@ -36,7 +35,6 @@ const initialState = {
 					id: 1,
 					name: 'Anderes',
 					isPaid: false,
-					createdBy: 'Hans',
 					amount: 4,
 					price: 8.5,
 					category: CATEGORIES.DRINKS,
@@ -46,7 +44,6 @@ const initialState = {
 					id: 2,
 					name: 'Schon bezahlt',
 					isPaid: true,
-					createdBy: 'Hans',
 					amount: 4,
 					price: 1.5,
 					category: CATEGORIES.DRINKS,
@@ -83,12 +80,15 @@ export function customers(state = initialState, action) {
             };
         case CUSTOMER_ITEMS_ADD:
             let nextItemId = state.nextItemId;
-            const newItems = action.payload.items.map(item => {
-                item.price *= item.amount;
-				item.id = nextItemId++;
-				item.timestamp = Date.now();
-                return item;
-            });
+            const newItems = action.payload.items.map(item => ({
+				id: nextItemId++,
+				price: item.amount * item.price,
+				timestamp: Date.now(),
+				category: item.category,
+				isPaid: false,
+				amount: item.amount,
+				name: item.name
+            }));
             return {
                 ...state,
                 nextItemId,
@@ -107,7 +107,8 @@ export function customers(state = initialState, action) {
                     .map(customer => (customer.id === action.payload.id)
                         ? {
                             ...customer,
-                            items: []
+							items: [],
+							payments: []
                         }
                         : customer)
 			};

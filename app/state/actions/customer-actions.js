@@ -1,4 +1,4 @@
-import { CUSTOMER_ADD, CUSTOMER_DELETE, CUSTOMER_UPDATE, CUSTOMER_SELECT, CUSTOMER_ITEMS_ADD, CUSTOMER_PAYMENT_ADD } from "../actions";
+import { CUSTOMER_ADD, CUSTOMER_DELETE, CUSTOMER_UPDATE, CUSTOMER_SELECT, CUSTOMER_ITEMS_ADD, CUSTOMER_PAYMENT_ADD, CUSTOMER_ITEMS_CLEAR } from "../actions";
 
 let nextCustomerId = 0;
 
@@ -49,6 +49,15 @@ export function addPayment(customerId, amount) {
         payload: {
             id: customerId,
             amount
+        }
+    };
+}
+
+export function clearAllTransactions(customerId) {
+    return {
+        type: CUSTOMER_ITEMS_CLEAR,
+        payload: {
+            id: customerId
         }
     };
 }
