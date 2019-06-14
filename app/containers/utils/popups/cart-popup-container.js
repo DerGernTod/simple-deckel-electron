@@ -4,7 +4,6 @@ import { addItems } from "../../../state/actions/customer-actions";
 
 const mapStateToProps = (state) => {
     return {
-        customerId: state.customers.selectedId,
         products: state.products.list
     };
 };

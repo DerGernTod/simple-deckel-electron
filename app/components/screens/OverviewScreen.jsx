@@ -5,6 +5,8 @@ import { CustomerItemListContainer } from '../../containers/customer-item-list-c
 import { Popup } from "../utils/popups/Popup";
 import { LoginPopupContainer } from '../../containers/utils/popups/login-popup-container';
 import { CartPopupContainer } from '../../containers/utils/popups/cart-popup-container';
+import { PaymentPopup } from '../utils/popups/PaymentPopup';
+import { PaymentPopupContainer } from '../../containers/utils/popups/payment-popup-container';
 
 export class OverviewScreen extends React.Component {
     constructor(props) {
@@ -36,8 +38,8 @@ export class OverviewScreen extends React.Component {
         return (
             <React.Fragment>
                 <LoginPopupContainer ref={elem => this.loginPopup = elem} onConfirmed={() => this.onLoginSuccessful()} title='Login erforderlich' />
-                <CartPopupContainer ref={elem => this.cartPopup = elem} title='Warenkorb' width='100%' height='100%' />
-                <Popup ref='paymentPopup' />
+                <CartPopupContainer ref={elem => this.cartPopup = elem} title='Warenkorb' width='100%' height='100%' customerId={this.props.selectedCustomerId} />
+                <PaymentPopupContainer ref='paymentPopup' title='Bezahlen' customerId={this.props.selectedCustomerId} />
                 <Popup ref='historyPopup' width='100%' height='100%' />
                 <div className="column full-height">
                     <div className="panel full-height">
@@ -49,8 +51,8 @@ export class OverviewScreen extends React.Component {
                         <CustomerItemListContainer selectedCustomerId={hasCustomerId ? Number(this.props.selectedCustomerId) : -1} />
                         <div className="flex item-controls">
                             <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('cart')}>+</button>
-                            <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('payment')}>Zahlung hinzufügen</button>
-                            <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('history')}>Vergangene Zahlungen</button>
+                            <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('payment')}>Bezahlen</button>
+                            <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('history')}>Vergangene Rechnungen</button>
                         </div>
                     </div>
                 </div>

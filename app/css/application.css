@@ -162,13 +162,15 @@ ul {
   list-style: none;
 }
 input[type=text],
-input[type=password] {
+input[type=password],
+input[type=number] {
   height: 40px;
   padding: 5px;
   font-size: 13pt;
 }
 input[type=text].focused,
-input[type=password].focused {
+input[type=password].focused,
+input[type=number].focused {
   border: 2px solid lightskyblue;
 }
 .popup-underlay {
@@ -191,13 +193,16 @@ input[type=password].focused {
   padding: 10px;
   background-color: lightslategray;
 }
-.popup-underlay .popup .login-popup {
+.popup-underlay .popup .login-popup,
+.popup-underlay .popup .payment-popup {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
 .popup-underlay .popup .login-popup div,
-.popup-underlay .popup .login-popup ul {
+.popup-underlay .popup .payment-popup div,
+.popup-underlay .popup .login-popup ul,
+.popup-underlay .popup .payment-popup ul {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -205,7 +210,9 @@ input[type=password].focused {
   width: 100%;
 }
 .popup-underlay .popup .login-popup div:last-child,
-.popup-underlay .popup .login-popup ul:last-child {
+.popup-underlay .popup .payment-popup div:last-child,
+.popup-underlay .popup .login-popup ul:last-child,
+.popup-underlay .popup .payment-popup ul:last-child {
   flex-direction: column;
 }
 .popup-underlay .popup > div {

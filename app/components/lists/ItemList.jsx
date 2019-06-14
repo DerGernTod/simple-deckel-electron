@@ -2,22 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Item } from "../utils/Item"; 
 
-export const ItemList = ({ items, onItemClick }) => {
-    const sum = items.reduce((sum, item) => sum - item.price, 0);
+export const ItemList = ({ payments, items, onItemClick }) => {
+    const entries = [];
+    let sum = 0;
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
+        if (!item.isPaid) {
+            entries.push(<Item
+                key = {item.id}
+                name = {item.name}
+                price = {-item.price}
+                category = {item.category}
+                amount = {item.amount}
+                onClick = {() => onItemClick(item.id)}
+            />);
+        }
+        sum -= item.price;
+    }
+    sum = payments.reduce((total, payment) => total + payment.amount, sum);
+
     return (
         <ul className="item-list flex-list">
-            {
-                items.filter(item => !item.isPaid).map(item => 
-                    <Item
-                        key = {item.id}
-                        name = {item.name}
-                        price = {-item.price}
-                        category = {item.category}
-                        amount = {item.amount}
-                        onClick = {() => onItemClick(item.id)}
-                    />)
-            }
-            
+            {entries}
             <li className="sum">
                 <div>Summe</div><div>{sum > 0 ? '+' : ''}{sum.toFixed(2)} €</div>
             </li>
@@ -30,6 +36,9 @@ ItemList.propTypes = {
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         amount: PropTypes.number.isRequired,
+    })),
+    payments: PropTypes.arrayOf(PropTypes.shape({
+        amount: PropTypes.number.isRequired
     })),
     onItemClick: PropTypes.func.isRequired
 };

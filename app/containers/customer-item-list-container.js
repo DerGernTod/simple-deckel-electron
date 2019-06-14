@@ -4,7 +4,8 @@ import { ItemList } from "../components/lists/ItemList";
 const mapStateToProps = (state, ownProps) => {
     const selectedCustomer = state.customers.list.find(customer => customer.id === ownProps.selectedCustomerId);
     return {
-        items: selectedCustomer ? selectedCustomer.items : []
+        items: selectedCustomer ? selectedCustomer.items : [],
+        payments: selectedCustomer ? selectedCustomer.payments: []
     };
 };
 

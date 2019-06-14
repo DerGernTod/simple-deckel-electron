@@ -18,11 +18,15 @@ export class CartPopup extends Popup {
             cart: []
         });
     }
+    confirm() {
+        this.props.onConfirmed(Number(this.props.customerId), this.state.cart.slice());
+        this.hide();
+    }
     getButtons() {
         return (
             <div>
                 <button onClick={() => this.hide()}>Abbrechen</button>
-                <button onClick={() => this.props.onConfirmed()}>Bestätigen</button>
+                <button onClick={() => this.confirm()}>Bestätigen</button>
             </div>
         );
     }
@@ -55,7 +59,6 @@ export class CartPopup extends Popup {
 
         if (!foundProduct.amount) {
             cartCopy.splice(foundProductId, 1)
-            
         }
         this.setState({
             cart: cartCopy
@@ -125,7 +128,7 @@ export class CartPopup extends Popup {
 CartPopup.propTypes = {
     ...Popup.propTypes,
     onConfirmed: PropTypes.func,
-    customerId: PropTypes.number.isRequired,
+    customerId: PropTypes.string.isRequired,
     products: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
