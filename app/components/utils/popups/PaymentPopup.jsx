@@ -11,9 +11,17 @@ export class PaymentPopup extends Popup {
             invalid: true
         };
     }
+
     componentDidUpdate(oldProps, oldState) {
         if (this.state.isVisible && !oldState.isVisible) {
             this.paymentInput.focus();
+            this.paymentInput.select();
+        }
+        if (this.props.total !== oldProps.total) {
+            this.setState({
+                value: this.props.total,
+                invalid: this.props.total <= 0
+            });
         }
     }
     confirm() {
@@ -71,5 +79,6 @@ export class PaymentPopup extends Popup {
 PaymentPopup.propTypes = {
     ...Popup.propTypes,
     onConfirmed: PropTypes.func.isRequired,
-    customerId: PropTypes.string.isRequired
+    customerId: PropTypes.string.isRequired,
+    total: PropTypes.number.isRequired
 };

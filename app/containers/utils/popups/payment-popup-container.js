@@ -2,9 +2,10 @@ import { connect } from "react-redux";
 import { PaymentPopup } from "../../../components/utils/popups/PaymentPopup";
 import { addPayment } from "../../../state/actions/customer-actions";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+    const customer = state.customers.list.find(customer => customer.id === Number(ownProps.customerId));
     return {
-        products: state.products.list
+        total: customer ? Math.max(0, -customer.total.toFixed(2)) : 0
     };
 };
 

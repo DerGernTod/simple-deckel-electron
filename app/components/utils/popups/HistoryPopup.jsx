@@ -54,18 +54,18 @@ export class HistoryPopup extends Popup {
                             const isPayment = !entry.category;
                             entryCounter++;
                             if (isPayment) {
-                                return <tr key={`entry-${entryCounter}`}>
+                                return <tr className="cat-Payment" key={`entry-${entryCounter}`}>
                                     <td>Zahlung</td>
                                     <td>+{entry.amount} €</td>
                                     <td>{this.state.creators[entry.createdBy]}</td>
-                                    <td>{dateFormat.format(Date.now())}</td>
+                                    <td>{dateFormat.format(entry.timestamp)}</td>
                                 </tr>;
                             } else {
-                                return <tr key={`entry-${entryCounter}`}>
+                                return <tr className={`cat-${entry.category}`} key={`entry-${entryCounter}`}>
                                     <td>{entry.amount} {entry.name}</td>
                                     <td>-{entry.price} €</td>
                                     <td>Unbekannt</td>
-                                    <td>{dateFormat.format(Date.now())}</td>
+                                    <td>{dateFormat.format(entry.timestamp)}</td>
                                 </tr>;
                             }
                         })}

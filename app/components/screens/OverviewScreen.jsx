@@ -34,6 +34,7 @@ export class OverviewScreen extends React.Component {
     }
     render() {
         const hasCustomerId = !isNaN(this.props.selectedCustomerId);
+        const sum = 0;
         return (
             <React.Fragment>
                 <LoginPopupContainer ref={elem => this.loginPopup = elem} onConfirmed={() => this.onLoginSuccessful()} title='Login erforderlich' />
@@ -48,6 +49,9 @@ export class OverviewScreen extends React.Component {
                 <div className="column full-height">
                     <div className="panel full-height overview-mid-panel">
                         <CustomerItemListContainer selectedCustomerId={hasCustomerId ? Number(this.props.selectedCustomerId) : -1} />
+                        <div className="sum">
+                            <div>Summe</div><div>{this.props.total > 0 ? '+' : ''}{this.props.total.toFixed(2)} €</div>
+                        </div>
                         <div className="flex item-controls">
                             <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('cart')}>+</button>
                             <button disabled={!hasCustomerId} onClick={() => this.onItemsButtonClick('payment')}>Bezahlen</button>
@@ -75,5 +79,6 @@ export class OverviewScreen extends React.Component {
 
 OverviewScreen.propTypes = {
     lastSaved: PropTypes.string.isRequired,
+    total: PropTypes.number.isRequired,
     selectedCustomerId: PropTypes.string
 };

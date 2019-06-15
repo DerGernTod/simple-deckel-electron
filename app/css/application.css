@@ -173,6 +173,17 @@ input[type=password].focused,
 input[type=number].focused {
   border: 2px solid lightskyblue;
 }
+table {
+  margin: 10px 0;
+  padding: 0 10px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden auto;
+  text-align: center;
+}
+table tr {
+  height: 70px;
+}
 .popup-underlay {
   display: none;
   position: absolute;
@@ -186,41 +197,41 @@ input[type=number].focused {
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
 }
-.popup-underlay .popup {
+.popup {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
   background-color: lightslategray;
 }
-.popup-underlay .popup .login-popup,
-.popup-underlay .popup .payment-popup {
+.popup .login-popup,
+.popup .payment-popup {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
-.popup-underlay .popup .login-popup div,
-.popup-underlay .popup .payment-popup div,
-.popup-underlay .popup .login-popup ul,
-.popup-underlay .popup .payment-popup ul {
+.popup .login-popup div,
+.popup .payment-popup div,
+.popup .login-popup ul,
+.popup .payment-popup ul {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
-.popup-underlay .popup .login-popup div:last-child,
-.popup-underlay .popup .payment-popup div:last-child,
-.popup-underlay .popup .login-popup ul:last-child,
-.popup-underlay .popup .payment-popup ul:last-child {
+.popup .login-popup div:last-child,
+.popup .payment-popup div:last-child,
+.popup .login-popup ul:last-child,
+.popup .payment-popup ul:last-child {
   flex-direction: column;
 }
-.popup-underlay .popup > div {
+.popup > div {
   width: 100%;
   height: 100%;
   overflow: auto;
 }
-.popup-underlay .popup > div:first-child {
+.popup > div:first-child {
   color: #404040;
   padding: 0 0 10px;
   margin: 0 0 10px;
@@ -230,19 +241,13 @@ input[type=number].focused {
   flex-shrink: 0;
   border-bottom: 1px solid #404040;
 }
-.popup-underlay .popup > div:last-child {
+.popup > div:last-child {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   height: 140px;
 }
-.cart-popup {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
-.cart-popup .available-products {
+.available-products {
   flex-basis: 70%;
   width: 100%;
   overflow: auto;
@@ -250,10 +255,10 @@ input[type=number].focused {
   flex-direction: row;
   justify-content: space-around;
 }
-.cart-popup .available-products ul {
+.available-products ul {
   width: 100%;
 }
-.cart-popup .available-products ul li {
+.available-products ul li {
   flex-direction: row;
   justify-content: space-between;
   padding: 20px;
@@ -261,11 +266,11 @@ input[type=number].focused {
   cursor: pointer;
   text-align: center;
 }
-.cart-popup .available-products ul li:not(:first-child) {
+.available-products ul li:not(:first-child) {
   border: 1px solid whitesmoke;
   display: flex;
 }
-.cart-popup .cart {
+.cart {
   display: block;
   overflow-x: hidden;
   overflow-y: auto;
@@ -273,7 +278,7 @@ input[type=number].focused {
   margin: 20px 0;
   flex-basis: 30%;
 }
-.cart-popup .cart li {
+.cart li {
   float: left;
   margin-right: 20px;
   flex-direction: row;
@@ -283,10 +288,16 @@ input[type=number].focused {
   cursor: pointer;
   border: 1px solid whitesmoke;
 }
-.cart-popup .cart li:last-child {
+.cart li:last-child {
   border: none;
   cursor: default;
   float: right;
+}
+.cart-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 .cat-Mahlzeiten {
   background-color: lightsalmon;
@@ -295,16 +306,22 @@ input[type=number].focused {
   background-color: #ffc4ad;
 }
 .cat-Getränke {
-  background-color: lightgreen;
+  background-color: paleturquoise;
 }
 .cat-Getränke:active {
-  background-color: #bcf5bc;
+  background-color: #d9f7f7;
 }
 .cat-Sonstiges {
   background-color: papayawhip;
 }
 .cat-Sonstiges:active {
   background-color: #ffffff;
+}
+.cat-Payment {
+  background-color: lightgreen;
+}
+.cat-Payment:active {
+  background-color: #bcf5bc;
 }
 .customer-list {
   height: 100%;
@@ -346,14 +363,15 @@ input[type=number].focused {
   background-color: lightsalmon;
 }
 .item-list li.item.cat-Getränke:not(:hover) {
-  background-color: lightgreen;
+  background-color: paleturquoise;
 }
-.item-list li.sum {
+.sum {
   cursor: inherit;
   display: flex;
   justify-content: space-between;
+  justify-self: flex-start;
 }
-.item-list li.sum:hover {
+.sum:hover {
   background-color: inherit;
 }
 .flex-list {

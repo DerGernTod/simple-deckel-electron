@@ -18,7 +18,8 @@ const initialState = {
 					category: CATEGORIES.MISC,
                     timestamp: 1560461260985
 				}
-			]
+			],
+			total: -13.5
 		},
 		{
 			id: 1,
@@ -49,7 +50,8 @@ const initialState = {
 					category: CATEGORIES.DRINKS,
                     timestamp: 1560461260985
 				}
-			]
+			],
+			total: 12.3
 		}
 	],
 	nextItemId: 3,
@@ -79,22 +81,28 @@ export function customers(state = initialState, action) {
 				selectedId: action.payload.id
             };
         case CUSTOMER_ITEMS_ADD:
-            let nextItemId = state.nextItemId;
-            const newItems = action.payload.items.map(item => ({
-				id: nextItemId++,
-				price: item.amount * item.price,
-				timestamp: Date.now(),
-				category: item.category,
-				isPaid: false,
-				amount: item.amount,
-				name: item.name
-            }));
+			let nextItemId = state.nextItemId;
+			let newItemsSum = 0;
+            const newItems = action.payload.items.map(item => {
+				const newPrice = item.amount * item.price;
+				newItemsSum += newPrice;
+				return {
+					id: nextItemId++,
+					price: newPrice,
+					timestamp: Date.now(),
+					category: item.category,
+					isPaid: false,
+					amount: item.amount,
+					name: item.name
+				}
+			});
             return {
                 ...state,
                 nextItemId,
                 list: state.list
                     .map(customer => {
                         if (customer.id === action.payload.id) {
+							customer.total -= newItemsSum;
                             customer.items = newItems.concat(customer.items);
                         }
                         return customer;
@@ -108,7 +116,8 @@ export function customers(state = initialState, action) {
                         ? {
                             ...customer,
 							items: [],
-							payments: []
+							payments: [],
+							total: 0
                         }
                         : customer)
 			};
@@ -125,6 +134,7 @@ export function customers(state = initialState, action) {
 						};
 						customer.items = customer.items.map(item => item.isPaid = true && item);
 						customer.payments = [newPayment].concat(customer.payments);
+						customer.total += action.payload.amount;
 					}
 					return customer;
 				})

@@ -2,9 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Item } from "../utils/Item"; 
 
-export const ItemList = ({ payments, items, onItemClick }) => {
+export const ItemList = ({ items, onItemClick }) => {
     const entries = [];
-    let sum = 0;
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
         if (!item.isPaid) {
@@ -17,19 +16,14 @@ export const ItemList = ({ payments, items, onItemClick }) => {
                 onClick = {() => onItemClick(item.id)}
             />);
         }
-        sum -= item.price;
     }
-    sum = payments.reduce((total, payment) => total + payment.amount, sum);
 
     return (
         <ul className="item-list flex-list">
             {entries}
-            <li className="sum">
-                <div>Summe</div><div>{sum > 0 ? '+' : ''}{sum.toFixed(2)} €</div>
-            </li>
         </ul>
     );
-    };
+};
 
 ItemList.propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
