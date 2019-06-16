@@ -316,7 +316,11 @@ table {
         flex-direction: column;
         &:first-child {
             justify-content: space-around;
-            & > button {
+            button {
+                width: 100%;
+            }
+            & > * {
+                width: 100%;
                 margin-bottom: 10px;
             }
         }
@@ -324,4 +328,8 @@ table {
             text-align: right;
         }
     }
+}
+
+.block {
+    display: block;
 }

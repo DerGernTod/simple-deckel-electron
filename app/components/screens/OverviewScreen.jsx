@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import { CustomerListContainer } from '../../containers/customer-list-container';
 import { CustomerItemListContainer } from '../../containers/customer-item-list-container';
 import { LoginPopupContainer } from '../../containers/utils/popups/login-popup-container';
@@ -34,13 +35,13 @@ export class OverviewScreen extends React.Component {
     }
     render() {
         const hasCustomerId = !isNaN(this.props.selectedCustomerId);
-        const sum = 0;
+        const customerId = hasCustomerId ? Number(this.props.selectedCustomerId) : -1;
         return (
             <React.Fragment>
                 <LoginPopupContainer ref={elem => this.loginPopup = elem} onConfirmed={() => this.onLoginSuccessful()} title='Login erforderlich' />
-                <CartPopupContainer ref={elem => this.cartPopup = elem} title='Warenkorb' width='100%' height='100%' customerId={this.props.selectedCustomerId} />
-                <PaymentPopupContainer ref='paymentPopup' title='Bezahlen' customerId={this.props.selectedCustomerId} />
-                <HistoryPopupContainer ref='historyPopup' title='Vergangene Rechnungen' width='100%' height='100%' customerId={this.props.selectedCustomerId} />
+                <CartPopupContainer ref={elem => this.cartPopup = elem} title='Warenkorb' width='100%' height='100%' customerId={customerId} />
+                <PaymentPopupContainer ref='paymentPopup' title='Bezahlen' customerId={customerId} />
+                <HistoryPopupContainer ref='historyPopup' title='Vergangene Rechnungen' width='100%' height='100%' customerId={customerId} />
                 <div className="column full-height">
                     <div className="panel full-height">
                         <CustomerListContainer />
@@ -48,7 +49,7 @@ export class OverviewScreen extends React.Component {
                 </div>
                 <div className="column full-height">
                     <div className="panel full-height overview-mid-panel">
-                        <CustomerItemListContainer selectedCustomerId={hasCustomerId ? Number(this.props.selectedCustomerId) : -1} />
+                        <CustomerItemListContainer selectedCustomerId={customerId} />
                         <div className="sum">
                             <div>Summe</div><div>{this.props.total > 0 ? '+' : ''}{this.props.total.toFixed(2)} €</div>
                         </div>
@@ -62,9 +63,15 @@ export class OverviewScreen extends React.Component {
                 <div className="column full-height">
                     <div className="full-height overview-controls flex">
                         <div className="flex">
-                            <button >Kunden verwalten</button>
-                            <button>Produkte verwalten</button>
-                            <button>Benutzer verwalten</button>
+                            <NavLink to='/customers' >
+                                <button className='full-height'>Kunden verwalten</button>
+                            </NavLink>
+                            <NavLink to='/products' >
+                                <button className='full-height'>Produkte verwalten</button>
+                            </NavLink>
+                            <NavLink to='/users' >
+                                <button className='full-height'>Benutzer verwalten</button>
+                            </NavLink>
                         </div>
                         <div className="flex">
                             <div>Zuletzt gespeichert: {this.props.lastSaved}</div>
@@ -80,5 +87,5 @@ export class OverviewScreen extends React.Component {
 OverviewScreen.propTypes = {
     lastSaved: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
-    selectedCustomerId: PropTypes.string
+    selectedCustomerId: PropTypes.number
 };

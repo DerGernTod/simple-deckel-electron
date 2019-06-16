@@ -19,7 +19,7 @@ export class CartPopup extends Popup {
         });
     }
     confirm() {
-        this.props.onConfirmed(Number(this.props.customerId), this.state.cart.slice());
+        this.props.onConfirmed(this.props.customerId, this.state.cart.slice());
         this.hide();
     }
     getButtons() {
@@ -37,7 +37,8 @@ export class CartPopup extends Popup {
             this.setState({
                 cart: cart.concat([{
                     ...addedProduct,
-                    amount: 1
+                    amount: 1,
+                    timestamp: Date.now()
                 }])
             });
         } else {
@@ -128,7 +129,7 @@ export class CartPopup extends Popup {
 CartPopup.propTypes = {
     ...Popup.propTypes,
     onConfirmed: PropTypes.func,
-    customerId: PropTypes.string.isRequired,
+    customerId: PropTypes.number.isRequired,
     products: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,

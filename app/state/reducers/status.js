@@ -1,6 +1,10 @@
-import { STATUS_SAVE_COMPLETE, STATUS_KEYBOARD_TARGET_CHANGE } from '../actions'
+import { STATUS_SAVE_COMPLETE, STATUS_KEYBOARD_TARGET_CHANGE, STATUS_LOGIN, STATUS_LOGOUT } from '../actions'
 
 const initialState = {
+    loggedInUser: {
+        id: -1,
+        name: 'Unbekannt'
+    },
     lastSaved: new Date().toLocaleString('de'),
     vkeyboardCallback: () => void 0,
     vkeyboardTarget: '',
@@ -20,6 +24,19 @@ export function status(state = initialState, action) {
                 vkeyboardTarget: action.payload.target,
                 vkeyboardCallback: action.payload.callback,
                 vkeyboardInitValue: action.payload.value || ''
+            };
+        case STATUS_LOGIN:
+            return {
+                ...state,
+                loggedInUser: action.payload
+            };
+        case STATUS_LOGOUT:
+            return {
+                ...state,
+                loggedInUser: {
+                    id: -1,
+                    name: 'Unbekannt'
+                }
             };
     }
     return state;

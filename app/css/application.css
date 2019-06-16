@@ -417,9 +417,16 @@ table tr {
 .overview-controls > div:first-child {
   justify-content: space-around;
 }
-.overview-controls > div:first-child > button {
+.overview-controls > div:first-child button {
+  width: 100%;
+}
+.overview-controls > div:first-child > * {
+  width: 100%;
   margin-bottom: 10px;
 }
 .overview-controls > div:last-child {
   text-align: right;
+}
+.block {
+  display: block;
 }

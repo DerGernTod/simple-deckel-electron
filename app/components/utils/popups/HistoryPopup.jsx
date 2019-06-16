@@ -16,7 +16,7 @@ export class HistoryPopup extends Popup {
         });
     }
     delete() {
-        this.props.onClear(Number(this.props.customerId));
+        this.props.onClear(this.props.customerId);
         this.hide();
     }
     getButtons() {
@@ -79,7 +79,7 @@ export class HistoryPopup extends Popup {
 HistoryPopup.propTypes = {
     ...Popup.propTypes,
     onClear: PropTypes.func.isRequired,
-    customerId: PropTypes.string.isRequired,
+    customerId: PropTypes.number.isRequired,
     items: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,

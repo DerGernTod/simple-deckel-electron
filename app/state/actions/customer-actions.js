@@ -2,13 +2,16 @@ import { CUSTOMER_ADD, CUSTOMER_DELETE, CUSTOMER_UPDATE, CUSTOMER_SELECT, CUSTOM
 
 let nextCustomerId = 0;
 
-export function addCustomer(name) {
+export function addCustomer(name, createdBy) {
     return {
         type: CUSTOMER_ADD,
         payload: {
             id: nextCustomerId++,
             name,
-            items: []
+            items: [],
+            payments: [],
+            createdBy,
+            timestamp: Date.now()
         }
     };
 }
@@ -43,12 +46,13 @@ export function addItems(customerId, items) {
     };
 }
 
-export function addPayment(customerId, amount) {
+export function addPayment(customerId, amount, createdBy) {
     return {
         type: CUSTOMER_PAYMENT_ADD,
         payload: {
             id: customerId,
-            amount
+            amount,
+            createdBy
         }
     };
 }

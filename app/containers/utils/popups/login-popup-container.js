@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { LoginPopup } from "../../../components/utils/popups/LoginPopup";
-import { changeKeyboardTarget } from "../../../state/actions/status-actions";
+import { changeKeyboardTarget, login } from "../../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
     return {
@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    updateKeyboardTarget: (target, callback, value) => dispatch(changeKeyboardTarget(target, callback, value))
+    updateKeyboardTarget: (target, callback, value) => dispatch(changeKeyboardTarget(target, callback, value)),
+    onLogin: (id, name) => dispatch(login(id, name))
 });
 
 export const LoginPopupContainer = connect(

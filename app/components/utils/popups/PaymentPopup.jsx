@@ -11,23 +11,35 @@ export class PaymentPopup extends Popup {
             invalid: true
         };
     }
-
-    componentDidUpdate(oldProps, oldState) {
-        if (this.state.isVisible && !oldState.isVisible) {
-            this.paymentInput.focus();
-            this.paymentInput.select();
-        }
-        if (this.props.total !== oldProps.total) {
+    confirm() {
+        this.props.onConfirmed(this.props.customerId, this.state.value, this.props.loggedInUser.id);
+        this.updateValue(0);
+        this.hide();
+    }
+    componentDidUpdate(prevProps, prevState) {
+        // reset state value to prop value if prop is different, but only if state value hasn't changed
+        if (prevState.value === this.state.value
+            && this.props.total !== this.state.value) {
             this.setState({
                 value: this.props.total,
                 invalid: this.props.total <= 0
             });
         }
     }
-    confirm() {
-        this.props.onConfirmed(Number(this.props.customerId), this.state.value);
-        this.updateValue(0);
-        this.hide();
+    show() {
+        this.paymentInput.focus();
+        this.paymentInput.select();
+        super.show();
+
+    }
+    hide() {
+        super.hide();
+        this.props.onHide();
+        this.setState({
+            value: 0,
+            invalid: true,
+            errors: []
+        });
     }
     getButtons() {
         return (
@@ -78,7 +90,8 @@ export class PaymentPopup extends Popup {
 
 PaymentPopup.propTypes = {
     ...Popup.propTypes,
+    onHide: PropTypes.func.isRequired,
     onConfirmed: PropTypes.func.isRequired,
-    customerId: PropTypes.string.isRequired,
+    customerId: PropTypes.number.isRequired,
     total: PropTypes.number.isRequired
 };

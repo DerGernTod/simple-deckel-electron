@@ -7,7 +7,7 @@ export const CustomerList = ({ customers }) =>
             customers.map(customer => 
                 <li key = {customer.id}>
                     <NavLink
-                        to = {`/${customer.id}`}
+                        to = {`/overview/${customer.id}`}
                         activeClassName = 'active'
                     >
                         {customer.name}

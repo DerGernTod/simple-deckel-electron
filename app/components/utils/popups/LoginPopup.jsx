@@ -42,6 +42,7 @@ export class LoginPopup extends Popup {
             // todo: hash pw here
             const hashedPw = password;
             if (foundUser.password === hashedPw) {
+                this.props.onLogin(foundUser.id, foundUser.name);
                 this.props.onConfirmed(foundUser.name);
                 this.hide();
             } else if (hashedPw) {
@@ -90,6 +91,7 @@ export class LoginPopup extends Popup {
 LoginPopup.propTypes = {
     ...Popup.propTypes,
     onConfirmed: PropTypes.func,
+    onLogin: PropTypes.func.isRequired,
     vkeyboardTarget: PropTypes.string.isRequired,
     users: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,

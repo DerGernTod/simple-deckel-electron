@@ -83,17 +83,17 @@ export function customers(state = initialState, action) {
         case CUSTOMER_ITEMS_ADD:
 			let nextItemId = state.nextItemId;
 			let newItemsSum = 0;
-            const newItems = action.payload.items.map(item => {
-				const newPrice = item.amount * item.price;
+            const newItems = action.payload.items.map(({amount, price, category, name, timestamp}) => {
+				const newPrice = amount * price;
 				newItemsSum += newPrice;
 				return {
 					id: nextItemId++,
 					price: newPrice,
-					timestamp: Date.now(),
-					category: item.category,
+					category,
 					isPaid: false,
-					amount: item.amount,
-					name: item.name
+					amount,
+					name,
+					timestamp
 				}
 			});
             return {
@@ -130,7 +130,7 @@ export function customers(state = initialState, action) {
 							id: state.nextPaymentId++,
 							timestamp: Date.now(),
 							amount: action.payload.amount,
-							createdBy: action.payload.id
+							createdBy: action.payload.createdBy
 						};
 						customer.items = customer.items.map(item => item.isPaid = true && item);
 						customer.payments = [newPayment].concat(customer.payments);
