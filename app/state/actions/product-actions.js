@@ -1,15 +1,13 @@
 import { PRODUCT_ADD, PRODUCT_DELETE, PRODUCT_UPDATE } from "../actions";
 
-let nextProductId = 0;
-
-export function addProduct(name, category, price) {
+export function addProduct(name, price, category, createdBy) {
     return {
         type: PRODUCT_ADD,
         payload: {
-            id: nextProductId++,
             name, 
             category, 
-            price
+            price,
+            createdBy
         }
     };
 }

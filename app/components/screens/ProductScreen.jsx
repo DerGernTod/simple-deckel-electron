@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {NavLink} from 'react-router-dom';
 import { VKeyboardTextInputContainer } from "../../containers/utils/vkeyboard-text-input-container";
 import { ConfirmPopup } from '../utils/popups/ConfirmPopup';
-export class CustomerScreen extends React.Component {
+import { CATEGORIES } from '../../constants';
+export class ProductScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,15 +12,19 @@ export class CustomerScreen extends React.Component {
                 id: -1,
                 name: ''
             },
+            newProductData: {
+                name: '',
+                price: 0,
+                category: CATEGORIES.MISC
+            },
             errors: []
         }
     }
     showAddPopup() {
-        this.addPopup.show()
-        this.nameInput.focus();
-        this.nameInput.select();
+        this.addPopup.show();
+        setTimeout(() => this.nameInput.focus(), 0);
     }
-    deleteCustomer(id, name) {
+    deleteProduct(id, name) {
         this.setState({
             deletion: {
                 id,
@@ -41,7 +46,7 @@ export class CustomerScreen extends React.Component {
             });
             return false;
         }
-        this.props.onCustomerAdded(nameValue, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
+        this.props.onProductAdded(nameValue, this.state.newProductData.price, this.state.newProductData.category, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
         this.props.updateKeyboardTarget('', () => void 0, '');
         return true;
     }
@@ -50,6 +55,7 @@ export class CustomerScreen extends React.Component {
             setTimeout(() => this.props.history.push('/overview'), 3000);
             return (<div>Access denied, redirecting...</div>);
         }
+        // todo: numeric vkeyboard input
         const formatter = Intl.DateTimeFormat('de', {
             year: 'numeric',
             month: 'short',
@@ -57,21 +63,44 @@ export class CustomerScreen extends React.Component {
         });
         return (
             <React.Fragment>
-                <ConfirmPopup onConfirmed={() => this.validateAdd()} title='Kunden hinzufügen' ref={popup => this.addPopup = popup}>
-                    <div className='add-customer-popup'>
+                <ConfirmPopup onHide={() => this.props.updateKeyboardTarget('', () => void 0, '')} onConfirmed={() => this.validateAdd()} title='Produkt hinzufügen' ref={popup => this.addPopup = popup} width="400px" height="350px">
+                    <div className='add-product-popup'>
                         <div>
-                            <label htmlFor='add-customer-popup-name'>Name</label>
+                            <label htmlFor='add-product-popup-name'>Name</label>
                             <VKeyboardTextInputContainer type='text'
-                                id='add-customer-popup-name'
+                                id='add-product-popup-name'
                                 ref={input => this.nameInput = input}
-                                placeholder='z.B. Brucker'
+                                placeholder='z.B. Schnitzel'
                                 onFocus={e => this.resetErrors()}
                             ></VKeyboardTextInputContainer>
+                        </div>
+                        <div>
+                            <label htmlFor='add-product-popup-price'>Preis</label>
+                            <input
+                                id='add-product-popup-price'
+                                type='number'
+                                min='0'
+                                max='1000'
+                                step='0.1'
+                                value={this.state.newProductData.price}
+                                onChange={(e) => this.setState({newProductData: {...this.state.newProductData, price: parseInt(e.target.value, 10)}})}
+                            ></input>
+                        </div>
+                        <div>
+                            <label htmlFor='add-product-popup-category'>Kategorie</label>
+                            <select
+                                id='add-product-popup-category'
+                                value={this.state.newProductData.category}
+                                onChange={(e) => this.setState({newProductData: {...this.state.newProductData, category: e.target.value}})}>
+                                <option>{CATEGORIES.DRINKS}</option>
+                                <option>{CATEGORIES.FOOD}</option>
+                                <option>{CATEGORIES.MISC}</option>
+                            </select>
                         </div>
                         <ul>{this.state.errors.map(error => <li>{error}</li>)}</ul>
                     </div>
                 </ConfirmPopup>
-                <ConfirmPopup onConfirmed={() => this.props.onCustomerDeleted(this.state.deletion.id)} title='Wirklich löschen?' ref={popup => this.deletePopup = popup} confirmText='Löschen'>
+                <ConfirmPopup onConfirmed={() => this.props.onProductDeleted(this.state.deletion.id)} title='Wirklich löschen?' ref={popup => this.deletePopup = popup} confirmText='Löschen'>
                     <div>
                         Soll '{this.state.deletion.name}' wirklich gelöscht werden?
                     </div>
@@ -82,23 +111,21 @@ export class CustomerScreen extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Summe</th>
-                                    <th>Letzte Bestellung</th>
-                                    <th>Letzte Zahlung</th>
+                                    <th>Preis</th>
+                                    <th>Kategorie</th>
                                     <th>Ersteller</th>
                                     <th>Erstellt am</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.props.customers.map(({id, name, total, lastOrder, lastPayment, createdBy, timestamp}) => <tr key={id}>
+                                {this.props.products.map(({id, name, price, category, createdBy, timestamp}) => <tr key={id}>
                                     <td>{name}</td>
-                                    <td>{`${total >= 0 ? '+' : ''}${total.toFixed(2)} €`}</td>
-                                    <td>{lastOrder ? formatter.format(lastOrder) : 'Nie'}</td>
-                                    <td>{lastPayment ? formatter.format(lastPayment) : 'Nie'}</td>
+                                    <td>{price.toFixed(2)} €</td>
+                                    <td>{category}</td>
                                     <td>{createdBy}</td>
                                     <td>{formatter.format(timestamp)}</td>
-                                    <td><button onClick={() => this.deleteCustomer(id, name)}>Löschen</button></td>
+                                    <td><button onClick={() => this.deleteProduct(id, name)}>Löschen</button></td>
                                 </tr>)}
                             </tbody>
                         </table>
@@ -121,13 +148,12 @@ export class CustomerScreen extends React.Component {
     }
 }
 
-CustomerScreen.propTypes = {
-    customers: PropTypes.arrayOf(PropTypes.shape({
+ProductScreen.propTypes = {
+    products: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
-        total: PropTypes.number.isRequired,
-        lastOrder: PropTypes.number.isRequired,
-        lastPayment: PropTypes.number.isRequired,
+        price: PropTypes.number.isRequired,
+        category: PropTypes.string.isRequired,
         createdBy: PropTypes.string.isRequired,
         timestamp: PropTypes.number.isRequired
     })).isRequired,
@@ -135,7 +161,7 @@ CustomerScreen.propTypes = {
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired
     }),
-    onCustomerAdded: PropTypes.func.isRequired,
-    onCustomerDeleted: PropTypes.func.isRequired,
+    onProductAdded: PropTypes.func.isRequired,
+    onProductDeleted: PropTypes.func.isRequired,
     updateKeyboardTarget: PropTypes.func.isRequired
 }

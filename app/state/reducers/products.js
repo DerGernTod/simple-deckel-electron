@@ -24,7 +24,11 @@ export function products(state = initialState, action) {
         case PRODUCT_ADD:
             return {
                 ...state, 
-                list: state.list.concat([action.payload])
+                list: state.list.concat([{
+                    id: state.nextProductId++,
+                    timestamp: Date.now(),
+                    ...action.payload
+                }])
             };
         case PRODUCT_DELETE:
             return {
