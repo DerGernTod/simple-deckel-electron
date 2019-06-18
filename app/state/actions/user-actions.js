@@ -1,14 +1,12 @@
 import { USER_ADD, USER_DELETE, USER_UPDATE, USER_LOGIN, USER_LOGOUT } from "../actions";
 
-let nextUserId = 0;
-
-export function addUser(name, password) {
+export function addUser(name, password, createdBy) {
     return {
         type: USER_ADD,
         payload: {
-            id: nextUserId++,
             name, 
-            password
+            password,
+            createdBy
         }
     };
 }

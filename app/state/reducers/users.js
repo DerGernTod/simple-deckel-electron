@@ -5,10 +5,11 @@ const initialState = {
         id: 0,
         name: 'hans',
         password: 'wurst',
-        createdBy: '',
+        createdBy: 0,
         timestamp: 0
     }],
-    loggedInUser: -1
+    loggedInUser: -1,
+    nextUserId: 1
 };
 
 export function users(state = initialState, action) {
@@ -16,10 +17,11 @@ export function users(state = initialState, action) {
         case USER_ADD:
             return {
                 ...state,
-                list: [
-                    ...state.list, 
-                    action.payload
-                ]
+                list: state.list.concat([{
+                    id: state.nextUserId++,
+                    timestamp: Date.now(),
+                    ...action.payload
+                }])
             };
         case USER_DELETE:
             return {

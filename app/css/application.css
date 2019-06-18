@@ -219,7 +219,8 @@ table tr {
 .popup .login-popup,
 .popup .payment-popup,
 .popup .add-customer-popup,
-.popup .add-product-popup {
+.popup .add-product-popup,
+.popup .add-user-popup {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -228,10 +229,12 @@ table tr {
 .popup .payment-popup div,
 .popup .add-customer-popup div,
 .popup .add-product-popup div,
+.popup .add-user-popup div,
 .popup .login-popup ul,
 .popup .payment-popup ul,
 .popup .add-customer-popup ul,
-.popup .add-product-popup ul {
+.popup .add-product-popup ul,
+.popup .add-user-popup ul {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -242,10 +245,12 @@ table tr {
 .popup .payment-popup div:last-child,
 .popup .add-customer-popup div:last-child,
 .popup .add-product-popup div:last-child,
+.popup .add-user-popup div:last-child,
 .popup .login-popup ul:last-child,
 .popup .payment-popup ul:last-child,
 .popup .add-customer-popup ul:last-child,
-.popup .add-product-popup ul:last-child {
+.popup .add-product-popup ul:last-child,
+.popup .add-user-popup ul:last-child {
   flex-direction: column;
 }
 .popup > div {
