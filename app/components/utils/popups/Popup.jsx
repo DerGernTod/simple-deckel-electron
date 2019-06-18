@@ -22,7 +22,7 @@ export class Popup extends React.Component {
         });
     }
     getContent() {
-        return (<div>{this.props.children}</div>);
+        return this.props.children;
     }
     getButtons() {
         return (<div><button onClick={() => this.hide()}>Schließen</button></div>)

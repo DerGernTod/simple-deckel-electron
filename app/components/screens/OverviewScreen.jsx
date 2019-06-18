@@ -28,6 +28,12 @@ export class OverviewScreen extends React.Component {
             this.loginPopup.show();
         }
     }
+    redirect(target) {
+        this.setState({
+            currentLoginAction: () => this.props.history.push(target)
+        });
+        this.loginPopup.show();
+    }
     resetLoginAction() {
         this.setState({
             currentLoginAction: () => void 0
@@ -63,15 +69,9 @@ export class OverviewScreen extends React.Component {
                 <div className="column full-height">
                     <div className="full-height overview-controls flex">
                         <div className="flex">
-                            <NavLink to='/customers' >
-                                <button className='full-height'>Kunden verwalten</button>
-                            </NavLink>
-                            <NavLink to='/products' >
-                                <button className='full-height'>Produkte verwalten</button>
-                            </NavLink>
-                            <NavLink to='/users' >
-                                <button className='full-height'>Benutzer verwalten</button>
-                            </NavLink>
+                            <button className='full-height' onClick={() => this.redirect('/customers')}>Kunden verwalten</button>
+                            <button className='full-height' onClick={() => this.redirect('/products')}>Produkte verwalten</button>
+                            <button className='full-height' onClick={() => this.redirect('/users')}>Benutzer verwalten</button>
                         </div>
                         <div className="flex">
                             <div>Zuletzt gespeichert: {this.props.lastSaved}</div>

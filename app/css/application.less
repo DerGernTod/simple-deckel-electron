@@ -32,10 +32,16 @@ button {
 #content {
     flex-direction: row;
     justify-content: space-between;
+    padding: 10px;
     .column {
         flex-basis: ~"calc(33% - 10px/3)";
+        &.broad {
+            flex-basis: ~"calc(250%/3 - 10px/3)";
+        }
+        &.slim {
+            flex-basis: ~"calc(50%/3 - 10px/3)";
+        }
     }
-    padding: 10px;
 }
 
 .flex {
@@ -46,6 +52,10 @@ button {
     height: 100%;
 }
 
+.full-width {
+    width: 100%;
+}
+
 .panel {
     background-color: white;
     padding: 10px;
@@ -54,7 +64,6 @@ button {
 .column {
     display: flex;
     flex-direction: column;
-    //padding: 10px;
 }
 
 ul {
@@ -74,7 +83,6 @@ table {
     margin: 10px 0;
     padding: 0 10px;
     width: 100%;
-    height: 100%;
     overflow: hidden auto;
     text-align: center;
     tr {
@@ -97,7 +105,7 @@ table {
 }
 
 .popup {
-    .login-popup, .payment-popup {
+    .login-popup, .payment-popup, .add-customer-popup {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
@@ -289,6 +297,15 @@ table {
         cursor: pointer;
         &:hover {
             background-color: lightblue;
+        }
+    }
+}
+
+.customer-details-list {
+    tbody tr {
+        background-color: darken(white, 3%);
+        &:nth-child(2n) {
+            background-color: darken(white, 5%);
         }
     }
 }

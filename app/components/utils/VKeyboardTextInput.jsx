@@ -38,6 +38,11 @@ export class VKeyboardTextInput extends React.Component {
             value: ''
         });
     }
+    setValue(value) {
+        this.setState({
+            value
+        });
+    }
     getValue() {
         return this.state.value;
     }
@@ -45,9 +50,8 @@ export class VKeyboardTextInput extends React.Component {
         return (
             <React.Fragment>
                 <input type={this.props.type}
+                    {...this.props}
                     ref={input => this.input = input}
-                    id={this.props.id}
-                    placeholder={this.props.placeholder}
                     value={this.state.value}
                     onChange={evt => this.handleChange(evt.target.value, true)}
                     onFocus={evt => this.handleFocus(evt)}

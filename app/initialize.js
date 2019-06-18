@@ -6,7 +6,7 @@ import { rootReducer } from './state/reducers';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { GermanKeyboardContainer } from './containers/keyboard-container';
 import { OverviewScreenContainer } from './containers/screens/overview-screen-container';
-import { CustomerScreen } from './components/screens/CustomerScreen';
+import { CustomerScreenContainer } from './containers/screens/customer-screen-container';
 
 const store = createStore(rootReducer);
 
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div id="content" className="flex">
           <Switch>
             <Route path="/overview/:selectedCustomerId?" component={OverviewScreenContainer} />
-            <Route path="/customers" component={CustomerScreen} />
+            <Route path="/customers" component={CustomerScreenContainer} />
             <Route component={OverviewScreenContainer} />
           </Switch>
           <GermanKeyboardContainer />

@@ -30,7 +30,6 @@ export class PaymentPopup extends Popup {
         this.paymentInput.focus();
         this.paymentInput.select();
         super.show();
-
     }
     hide() {
         super.hide();
@@ -45,7 +44,7 @@ export class PaymentPopup extends Popup {
         return (
             <div>
                 <button onClick={() => this.hide()}>Abbrechen</button>
-                <button disabled={this.state.invalid} onClick={() => this.confirm()}>Akzeptieren</button>
+                <button disabled={this.state.invalid} onClick={() => this.confirm()}>Bestätigen</button>
             </div>
         );
     }
@@ -67,6 +66,7 @@ export class PaymentPopup extends Popup {
         }
     }
     getContent() {
+        // todo: we need a vkeyboard implementation for numeric keyboards
         return (
             <div className='payment-popup'>
                 <div>

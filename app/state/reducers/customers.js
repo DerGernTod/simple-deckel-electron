@@ -19,7 +19,8 @@ const initialState = {
                     timestamp: 1560461260985
 				}
 			],
-			total: -13.5
+			total: -13.5,
+			timestamp: 1560461260985
 		},
 		{
 			id: 1,
@@ -51,11 +52,13 @@ const initialState = {
                     timestamp: 1560461260985
 				}
 			],
-			total: 12.3
+			total: 12.3,
+			timestamp: 1560461260985
 		}
 	],
 	nextItemId: 3,
-	nextPaymentId: 1
+	nextPaymentId: 1,
+	nextCustomerId: 2
 };
 
 export function customers(state = initialState, action) {
@@ -63,7 +66,17 @@ export function customers(state = initialState, action) {
 		case CUSTOMER_ADD:
 			return {
 				...state,
-				list: [ ...state.list, action.payload ]
+				list: [ ...state.list, 
+					{
+						id: state.nextCustomerId++,
+						name: action.payload.name,
+						createdBy: action.payload.createdBy,
+						items: [],
+						payments: [],
+						total: 0,
+						timestamp: Date.now()
+					}
+				]
 			};
 		case CUSTOMER_DELETE:
 			return {

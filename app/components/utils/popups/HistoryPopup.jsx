@@ -1,6 +1,7 @@
 import React from 'react';
 import { Popup } from "./Popup";
 import PropTypes from "prop-types";
+import { ConfirmPopup } from './ConfirmPopup';
 export class HistoryPopup extends Popup {
     constructor(props) {
         super(props);
@@ -17,13 +18,12 @@ export class HistoryPopup extends Popup {
     }
     delete() {
         this.props.onClear(this.props.customerId);
-        this.hide();
     }
     getButtons() {
         return (
             <div>
                 <button onClick={() => this.hide()}>Schließen</button>
-                <button onClick={() => this.delete()}>Alles löschen</button>
+                <button onClick={() => this.confirmPopup.show()}>Alles löschen</button>
             </div>
         );
     }
@@ -40,6 +40,7 @@ export class HistoryPopup extends Popup {
         });
         return (
             <div className='history-popup'>
+                <ConfirmPopup title='Wirklich löschen?' ref={popup => this.confirmPopup = popup} onConfirmed={() => this.delete()} confirmText='Alles löschen'>Wirklich sämtliche Einträge löschen?</ConfirmPopup>
                 <table className='history'>
                     <thead>
                         <tr>
