@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom';
 import { VKeyboardTextInputContainer } from "../../containers/utils/vkeyboard-text-input-container";
 import { ConfirmPopup } from '../utils/popups/ConfirmPopup';
 import { CATEGORIES } from '../../constants';
+import { VKeyboardNumericInputContainer } from '../../containers/utils/vkeyboard-numeric-input-container';
 export class ProductScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -46,8 +47,10 @@ export class ProductScreen extends React.Component {
             });
             return false;
         }
-        this.props.onProductAdded(nameValue, this.state.newProductData.price, this.state.newProductData.category, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
+        this.props.onProductAdded(nameValue, this.priceInput.getValue(), this.state.newProductData.category, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
         this.props.updateKeyboardTarget('', () => void 0, '');
+        this.priceInput.reset();
+        this.nameInput.reset();
         return true;
     }
     render() {
@@ -55,7 +58,6 @@ export class ProductScreen extends React.Component {
             setTimeout(() => this.props.history.push('/overview'), 3000);
             return (<div>Access denied, redirecting...</div>);
         }
-        // todo: numeric vkeyboard input
         const formatter = Intl.DateTimeFormat('de', {
             year: 'numeric',
             month: 'short',
@@ -76,15 +78,15 @@ export class ProductScreen extends React.Component {
                         </div>
                         <div>
                             <label htmlFor='add-product-popup-price'>Preis</label>
-                            <input
+                            <VKeyboardNumericInputContainer
                                 id='add-product-popup-price'
+                                ref={input => this.priceInput = input}
                                 type='number'
                                 min='0'
                                 max='1000'
                                 step='0.1'
-                                value={this.state.newProductData.price}
-                                onChange={(e) => this.setState({newProductData: {...this.state.newProductData, price: parseInt(e.target.value, 10)}})}
-                            ></input>
+                                onFocus={e => this.resetErrors()}
+                            ></VKeyboardNumericInputContainer>
                         </div>
                         <div>
                             <label htmlFor='add-product-popup-category'>Kategorie</label>
@@ -107,7 +109,7 @@ export class ProductScreen extends React.Component {
                 </ConfirmPopup>
                 <div className='column full-height broad'>
                     <div className='panel full-height'>
-                        <table className='customer-details-list'>
+                        <table className='product-details-list'>
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -119,7 +121,7 @@ export class ProductScreen extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.props.products.map(({id, name, price, category, createdBy, timestamp}) => <tr key={id}>
+                                {this.props.products.map(({id, name, price, category, createdBy, timestamp}) => <tr key={id} className={`cat-${category}`}>
                                     <td>{name}</td>
                                     <td>{price.toFixed(2)} €</td>
                                     <td>{category}</td>

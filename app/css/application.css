@@ -162,6 +162,7 @@ button {
 .panel {
   background-color: white;
   padding: 10px;
+  overflow: hidden auto;
 }
 .column {
   display: flex;

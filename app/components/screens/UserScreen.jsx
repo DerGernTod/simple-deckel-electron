@@ -68,9 +68,10 @@ export class UserScreen extends React.Component {
             month: 'short',
             day: 'numeric'
         });
+        const deleteEnabled = this.props.users.length > 1;
         return (
             <React.Fragment>
-                <ConfirmPopup onConfirmed={() => this.validateAdd()} title='Kunden hinzufügen' ref={popup => this.addPopup = popup}>
+                <ConfirmPopup onConfirmed={() => this.validateAdd()} title='Kunden hinzufügen' ref={popup => this.addPopup = popup} width="500px" height="400px">
                     <div className='add-user-popup'>
                         <div>
                             <label htmlFor='add-user-popup-name'>Name</label>
@@ -83,7 +84,7 @@ export class UserScreen extends React.Component {
                         </div>
                         <div>
                             <label htmlFor='add-user-popup-pw'>Passwort</label>
-                            <VKeyboardTextInputContainer type='text'
+                            <VKeyboardTextInputContainer type='password'
                                 id='add-user-popup-pw'
                                 ref={input => this.pwInput = input}
                                 onFocus={e => this.resetErrors()}
@@ -91,7 +92,7 @@ export class UserScreen extends React.Component {
                         </div>
                         <div>
                             <label htmlFor='add-user-popup-pw2'>Passwort wiederholen</label>
-                            <VKeyboardTextInputContainer type='text'
+                            <VKeyboardTextInputContainer type='password'
                                 id='add-user-popup-pw2'
                                 ref={input => this.pw2Input = input}
                                 onFocus={e => this.resetErrors()}
@@ -121,7 +122,7 @@ export class UserScreen extends React.Component {
                                     <td>{name}</td>
                                     <td>{createdBy}</td>
                                     <td>{formatter.format(timestamp)}</td>
-                                    <td><button onClick={() => this.deleteUser(id, name)}>Löschen</button></td>
+                                    <td><button disabled={!deleteEnabled} onClick={() => this.deleteUser(id, name)}>Löschen</button></td>
                                 </tr>)}
                             </tbody>
                         </table>
