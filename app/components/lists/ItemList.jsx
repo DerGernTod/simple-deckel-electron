@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Item } from "../utils/Item"; 
+import { DB_LIMITS } from "../../constants";
 
 export class ItemList extends React.Component {
     constructor(props) {
@@ -14,15 +15,15 @@ export class ItemList extends React.Component {
     }
     componentDidUpdate(prevProps) {
         if (prevProps.customerId !== this.props.customerId) {
-            this.props.loadItems(this.props.customerId, 0, 10);
+            this.props.loadItems(this.props.customerId, 0, DB_LIMITS);
         }
     }
     load(older) {
-        const newOffset = Math.max(0, this.state.itemOffset + (older ? 10 : -10))
+        const newOffset = Math.max(0, this.state.itemOffset + DB_LIMITS * (older ? 1 : -1))
         this.setState({
             itemOffset: newOffset
         });
-        this.props.loadItems(this.props.customerId, newOffset, 10);
+        this.props.loadItems(this.props.customerId, newOffset, DB_LIMITS);
     }
     render() {
         const items = this.props.items;

@@ -1,13 +1,17 @@
 import { ITEMS_ADD, STATUS_LOADING, STATUS_SAVE_COMPLETE, ITEMS_LIST } from "../actions";
 import { DataBase } from "../db";
 
-export function loadItems(customerId, offset = 0, limit = 0) {
+export function loadItems(customerId, offset = 0, limit = 0, includePaid = false) {
     return async dispatch => {
         dispatch({
             type: STATUS_LOADING
         });
         try {
-            const items = await DataBase.table('items').where('customerId').equals(customerId).reverse().sortBy('timestamp');
+            let itemsPromise = DataBase.table('items').where('customerId').equals(customerId);
+            if (!includePaid) {
+                itemsPromise = itemsPromise.and(item => !item.isPaid);
+            }
+            const items = await itemsPromise.reverse().sortBy('timestamp');
             dispatch({
                 type: ITEMS_LIST,
                 payload: items.reduce((payload, item, curIndex) => {
@@ -53,15 +57,15 @@ export function addItems(customerId, items) {
             }));
             const customer = await DataBase.table('customers').get(customerId);
             const newTotal = customer.total - itemsTotal;
-            await DataBase.table('customers').update(customerId, { total: newTotal, lastOrder: Date.now() });
+            await DataBase.table('customers').update(customerId, { total: newTotal, lastOrder: timestamp });
             const customerItems = await DataBase.table('items').where('customerId').equals(customerId).reverse().sortBy('timestamp');
             dispatch({
                 type: ITEMS_ADD,
                 payload: {
                     id: customerId,
-                    list: customerItems.slice(0, 10),
+                    list: customerItems.slice(0, DB_LIMITS),
                     remainingNext: 0,
-                    remainingPrev: Math.max(0, customerItems.length - 10),
+                    remainingPrev: Math.max(0, customerItems.length - DB_LIMITS),
                     total: newTotal
                 }
             });

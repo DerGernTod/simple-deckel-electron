@@ -3,3 +3,5 @@ export const CATEGORIES = {
     FOOD: 'Mahlzeiten',
     MISC: 'Sonstiges'
 };
+
+export const DB_LIMITS = 6;

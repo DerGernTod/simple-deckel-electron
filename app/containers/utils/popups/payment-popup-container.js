@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { PaymentPopup } from "../../../components/utils/popups/PaymentPopup";
-import { addPayment } from "../../../state/actions/customer-actions";
+import { addPayment } from "../../../state/actions/payment-actions";
 import { logout } from "../../../state/actions/status-actions";
 
 const mapStateToProps = (state, ownProps) => {

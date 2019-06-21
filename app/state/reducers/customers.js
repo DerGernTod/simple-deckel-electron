@@ -49,18 +49,6 @@ export function customers(state = initialState, action) {
 				...state,
 				selectedId: action.payload.id
             };
-        case CUSTOMER_ITEMS_ADD:
-            return {
-                ...state,
-                list: state.list
-                    .map(customer => {
-                        if (customer.id === action.payload.id) {
-							customer.total = action.payload.total;
-                            customer.items = action.payload.items;
-                        }
-                        return customer;
-                    })
-            };
         case CUSTOMER_CLEAR:
             return {
                 ...state,
@@ -68,29 +56,9 @@ export function customers(state = initialState, action) {
                     .map(customer => (customer.id === action.payload.id)
                         ? {
                             ...customer,
-							items: [],
-							payments: [],
 							total: 0
                         }
                         : customer)
-			};
-		case PAYMENT_ADD:
-			return {
-				...state,
-				list: state.list.map(customer => {
-					if (customer.id === action.payload.id) {
-						const newPayment = {
-							id: state.nextPaymentId++,
-							timestamp: Date.now(),
-							amount: action.payload.amount,
-							createdBy: action.payload.createdBy
-						};
-						customer.items = customer.items.map(item => item.isPaid = true && item);
-						customer.payments = [newPayment].concat(customer.payments);
-						customer.total += action.payload.amount;
-					}
-					return customer;
-				})
 			};
 		case CUSTOMER_LOAD:
 			return {
@@ -98,6 +66,7 @@ export function customers(state = initialState, action) {
 				list: action.payload.list
 			};
 		case ITEMS_ADD:
+		case PAYMENT_ADD:
 			return {
 				...state,
 				list: state.list.map(customer => {
@@ -109,7 +78,7 @@ export function customers(state = initialState, action) {
 					}
 					return customer;
 				})
-			}
+			};
 	}
 	return state;
 }

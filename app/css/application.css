@@ -421,6 +421,10 @@ table tr {
 .flex-list li:hover {
   background-color: lightblue;
 }
+.flex-list li:active {
+  background-color: #9ae0b5;
+  box-shadow: 0 0 5px inset;
+}
 .customer-details-list tbody tr {
   background-color: #f7f7f7;
 }
