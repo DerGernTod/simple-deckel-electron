@@ -12,6 +12,9 @@ export class CartPopup extends Popup {
             cart: []
         };
     }
+    componentDidMount() {
+        this.props.loadProducts();
+    }
     hide() {
         super.hide();
         this.setState({
@@ -135,5 +138,6 @@ CartPopup.propTypes = {
         name: PropTypes.string.isRequired,
         category: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired
-    })).isRequired
+    })).isRequired,
+    loadProducts: PropTypes.func.isRequired
 };

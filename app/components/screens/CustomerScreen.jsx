@@ -14,10 +14,11 @@ export class CustomerScreen extends React.Component {
             errors: []
         }
     }
+    componentDidMount() {
+        this.props.loadCustomers();
+    }
     showAddPopup() {
-        this.addPopup.show()
-        this.nameInput.focus();
-        this.nameInput.select();
+        this.addPopup.show();
     }
     deleteCustomer(id, name) {
         this.setState({
@@ -43,6 +44,7 @@ export class CustomerScreen extends React.Component {
         }
         this.props.onCustomerAdded(nameValue, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
         this.props.updateKeyboardTarget('', () => void 0, '');
+        this.nameInput.reset();
         return true;
     }
     render() {
@@ -57,7 +59,13 @@ export class CustomerScreen extends React.Component {
         });
         return (
             <React.Fragment>
-                <ConfirmPopup onConfirmed={() => this.validateAdd()} title='Kunden hinzufügen' ref={popup => this.addPopup = popup}>
+                <ConfirmPopup
+                    onShow={() => {
+                        this.nameInput.focus();
+                    }}
+                    onConfirmed={() => this.validateAdd()}
+                    title='Kunden hinzufügen'
+                    ref={popup => this.addPopup = popup}>
                     <div className='add-customer-popup'>
                         <div>
                             <label htmlFor='add-customer-popup-name'>Name</label>
@@ -137,5 +145,6 @@ CustomerScreen.propTypes = {
     }),
     onCustomerAdded: PropTypes.func.isRequired,
     onCustomerDeleted: PropTypes.func.isRequired,
+    loadCustomers: PropTypes.func.isRequired,
     updateKeyboardTarget: PropTypes.func.isRequired
 }

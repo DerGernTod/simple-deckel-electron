@@ -23,6 +23,7 @@ export class PaymentPopup extends Popup {
         });
     }
     componentDidUpdate(oldProps, oldState) {
+        super.componentDidUpdate(oldProps, oldState);
         if (this.state.isVisible && !oldState.isVisible) {
             this.paymentInput.handleChange(String(this.props.total), true);
             this.paymentInput.focus();

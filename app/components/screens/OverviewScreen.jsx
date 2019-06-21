@@ -74,7 +74,7 @@ export class OverviewScreen extends React.Component {
                             <button className='full-height' onClick={() => this.redirect('/users')}>Benutzer verwalten</button>
                         </div>
                         <div className="flex">
-                            <div>Zuletzt gespeichert: {this.props.lastSaved}</div>
+                            <div>{this.props.loading ? 'Loading...' : 'Done!'}</div>
                             <button onClick={() => window.close()}>Beenden</button>
                         </div>
                     </div>
@@ -85,7 +85,7 @@ export class OverviewScreen extends React.Component {
 }
 
 OverviewScreen.propTypes = {
-    lastSaved: PropTypes.string.isRequired,
+    loading: PropTypes.bool.isRequired,
     total: PropTypes.number.isRequired,
     selectedCustomerId: PropTypes.number
 };

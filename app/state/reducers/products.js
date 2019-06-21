@@ -1,4 +1,4 @@
-import {PRODUCT_DELETE, PRODUCT_ADD, PRODUCT_UPDATE} from '../actions'
+import {PRODUCT_DELETE, PRODUCT_ADD, PRODUCT_UPDATE, PRODUCT_LOAD} from '../actions'
 import { CATEGORIES } from '../../constants';
 const initialState = {
     list: [{
@@ -19,27 +19,30 @@ const initialState = {
     nextProductId: 2
 };
 
+export const initialProductState = initialState;
+
 export function products(state = initialState, action) {
     switch (action.type) {
         case PRODUCT_ADD:
             return {
                 ...state, 
-                list: state.list.concat([{
-                    id: state.nextProductId++,
-                    timestamp: Date.now(),
-                    ...action.payload
-                }])
+                list: state.list.concat([ action.payload ])
             };
         case PRODUCT_DELETE:
             return {
                 ...state,
                 list: state.list.filter(elem => elem.id != action.payload.id)
-            }
+            };
         case PRODUCT_UPDATE:
             return {
                 ...state,
                 list: state.list.map(prod => prod.id === action.payload.id ? action.payload : prod)
-            }
+            };
+        case PRODUCT_LOAD:
+            return {
+                ...state,
+                list: action.payload
+            };
     }
     return state;
 }

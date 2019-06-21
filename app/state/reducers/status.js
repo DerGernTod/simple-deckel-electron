@@ -1,22 +1,29 @@
-import { STATUS_SAVE_COMPLETE, STATUS_KEYBOARD_TARGET_CHANGE, STATUS_LOGIN, STATUS_LOGOUT } from '../actions'
+import { STATUS_SAVE_COMPLETE, STATUS_KEYBOARD_TARGET_CHANGE, STATUS_LOGIN, STATUS_LOGOUT, STATUS_LOADING } from '../actions'
 
 const initialState = {
     loggedInUser: {
         id: -1,
         name: 'Unbekannt'
     },
-    lastSaved: new Date().toLocaleString('de'),
+    loading: 0,
     vkeyboardCallback: () => void 0,
     vkeyboardTarget: '',
     vkeyboardInitValue: ''
 };
+
+export const initialStatusState = initialState;
 
 export function status(state = initialState, action) {
     switch (action.type) {
         case STATUS_SAVE_COMPLETE:
             return {
                 ...state, 
-                lastSaved: action.payload
+                loading: status.loading - 1
+            };
+        case STATUS_LOADING:
+            return {
+                ...state,
+                loading: status.loading + 1
             };
         case STATUS_KEYBOARD_TARGET_CHANGE:
             return {

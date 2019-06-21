@@ -1,4 +1,4 @@
-import { USER_ADD, USER_DELETE, USER_UPDATE, USER_LOGIN, USER_LOGOUT } from "../actions";
+import { USER_ADD, USER_DELETE, USER_UPDATE, USER_LOAD } from "../actions";
 
 const initialState = {
     list: [{
@@ -8,9 +8,10 @@ const initialState = {
         createdBy: 0,
         timestamp: 0
     }],
-    loggedInUser: -1,
     nextUserId: 1
 };
+
+export const initialUserState = initialState;
 
 export function users(state = initialState, action) {
     switch (action.type) {
@@ -33,15 +34,10 @@ export function users(state = initialState, action) {
                 ...state,
                 list: state.map(elem => elem.id === action.payload.id ? action.payload : elem)
             };
-        case USER_LOGIN:
+        case USER_LOAD:
             return {
                 ...state,
-                loggedInUser: action.payload.id
-            };
-        case USER_LOGOUT:
-            return {
-                ...state,
-                loggedInUser: -1
+                list: action.payload
             };
     }
     return state;

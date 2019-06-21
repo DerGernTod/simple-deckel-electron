@@ -21,6 +21,9 @@ export class ProductScreen extends React.Component {
             errors: []
         }
     }
+    componentDidMount() {
+        this.props.loadProducts();
+    }
     showAddPopup() {
         this.addPopup.show();
         setTimeout(() => this.nameInput.focus(), 0);
@@ -165,5 +168,6 @@ ProductScreen.propTypes = {
     }),
     onProductAdded: PropTypes.func.isRequired,
     onProductDeleted: PropTypes.func.isRequired,
-    updateKeyboardTarget: PropTypes.func.isRequired
+    updateKeyboardTarget: PropTypes.func.isRequired,
+    loadProducts: PropTypes.func.isRequired
 }

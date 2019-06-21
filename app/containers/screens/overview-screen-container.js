@@ -6,7 +6,7 @@ const mapStateToProps = (state, ownProps) => {
     const customer = state.customers.list.find(customer => customer.id === selectedCustomerId);
 
     return {
-        lastSaved: state.status.lastSaved,
+        loading: !!state.status.loading,
         total: customer ? customer.total : 0,
         selectedCustomerId
     };

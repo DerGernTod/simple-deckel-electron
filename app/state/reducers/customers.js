@@ -1,4 +1,4 @@
-import { CUSTOMER_ADD, CUSTOMER_DELETE, CUSTOMER_UPDATE, CUSTOMER_SELECT, CUSTOMER_ITEMS_ADD, CUSTOMER_ITEMS_CLEAR, CUSTOMER_PAYMENT_ADD } from '../actions';
+import { CUSTOMER_ADD, CUSTOMER_DELETE, CUSTOMER_UPDATE, CUSTOMER_SELECT, CUSTOMER_ITEMS_ADD, CUSTOMER_ITEMS_CLEAR, CUSTOMER_PAYMENT_ADD, CUSTOMER_LOAD } from '../actions';
 import { CATEGORIES } from '../../constants';
 
 const initialState = {
@@ -61,21 +61,15 @@ const initialState = {
 	nextCustomerId: 2
 };
 
+export const initialCustomerState = initialState;
+
 export function customers(state = initialState, action) {
 	switch (action.type) {
 		case CUSTOMER_ADD:
 			return {
 				...state,
 				list: [ ...state.list, 
-					{
-						id: state.nextCustomerId++,
-						name: action.payload.name,
-						createdBy: action.payload.createdBy,
-						items: [],
-						payments: [],
-						total: 0,
-						timestamp: Date.now()
-					}
+					action.payload
 				]
 			};
 		case CUSTOMER_DELETE:
@@ -94,29 +88,13 @@ export function customers(state = initialState, action) {
 				selectedId: action.payload.id
             };
         case CUSTOMER_ITEMS_ADD:
-			let nextItemId = state.nextItemId;
-			let newItemsSum = 0;
-            const newItems = action.payload.items.map(({amount, price, category, name, timestamp}) => {
-				const newPrice = amount * price;
-				newItemsSum += newPrice;
-				return {
-					id: nextItemId++,
-					price: newPrice,
-					category,
-					isPaid: false,
-					amount,
-					name,
-					timestamp
-				}
-			});
             return {
                 ...state,
-                nextItemId,
                 list: state.list
                     .map(customer => {
                         if (customer.id === action.payload.id) {
-							customer.total -= newItemsSum;
-                            customer.items = newItems.concat(customer.items);
+							customer.total = action.payload.total;
+                            customer.items = action.payload.items;
                         }
                         return customer;
                     })
@@ -151,6 +129,11 @@ export function customers(state = initialState, action) {
 					}
 					return customer;
 				})
+			};
+		case CUSTOMER_LOAD:
+			return {
+				...state,
+				list: action.payload.list
 			};
 	}
 	return state;

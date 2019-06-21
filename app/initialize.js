@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { createStore } from 'redux';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer } from './state/reducers';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
@@ -9,8 +10,20 @@ import { OverviewScreenContainer } from './containers/screens/overview-screen-co
 import { CustomerScreenContainer } from './containers/screens/customer-screen-container';
 import { ProductScreenContainer } from './containers/screens/product-screen-container';
 import { UserScreenContainer } from './containers/screens/user-screen-container';
+import { initialUserState } from './state/reducers/users';
+import { initialProductState } from './state/reducers/products';
+import { initialCustomerState } from './state/reducers/customers';
+import { initialStatusState } from './state/reducers/status';
+import { loadUsers } from './state/actions/user-actions';
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, {
+  users: {list: []},
+  products: {list: []},
+  customers: {list: []},
+  status: initialStatusState
+}, compose(applyMiddleware(thunk)));
+
+store.dispatch(loadUsers());
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(

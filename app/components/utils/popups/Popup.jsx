@@ -8,6 +8,11 @@ export class Popup extends React.Component {
         }
         document.addEventListener('keyup', (evt) => evt.key === 'Escape' && this.hide())
     }
+    componentDidUpdate(oldProps, oldState) {
+        if (this.state.isVisible && !oldState.isVisible) {
+            this.props.onShow && this.props.onShow();
+        }
+    }
     hide() {
         if (this.props.onHide && this.state.isVisible) {
             this.props.onHide();
@@ -51,5 +56,6 @@ export class Popup extends React.Component {
 Popup.propTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
-    onHide: PropTypes.func
+    onHide: PropTypes.func,
+    onShow: PropTypes.func
 };

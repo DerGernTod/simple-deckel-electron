@@ -11,6 +11,7 @@ export class LoginPopup extends Popup {
         };
     }
     componentDidUpdate(oldProps, oldState) {
+        super.componentDidUpdate(oldProps, oldState);
         if (this.state.isVisible && !oldState.isVisible) {
             this.usernameInput.focus();
         }
