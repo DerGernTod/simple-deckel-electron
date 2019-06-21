@@ -10,9 +10,6 @@ import { OverviewScreenContainer } from './containers/screens/overview-screen-co
 import { CustomerScreenContainer } from './containers/screens/customer-screen-container';
 import { ProductScreenContainer } from './containers/screens/product-screen-container';
 import { UserScreenContainer } from './containers/screens/user-screen-container';
-import { initialUserState } from './state/reducers/users';
-import { initialProductState } from './state/reducers/products';
-import { initialCustomerState } from './state/reducers/customers';
 import { initialStatusState } from './state/reducers/status';
 import { loadUsers } from './state/actions/user-actions';
 
@@ -20,6 +17,16 @@ const store = createStore(rootReducer, {
   users: {list: []},
   products: {list: []},
   customers: {list: []},
+  items: {
+    list: [],
+    remainingNext: 0,
+    remainingPrev: 0
+  },
+  payments: {
+    list: [],
+    remainingNext: 0,
+    remainingPrev: 0
+  },
   status: initialStatusState
 }, compose(applyMiddleware(thunk)));
 

@@ -1,16 +1,19 @@
 import { connect } from "react-redux";
 import { ItemList } from "../components/lists/ItemList";
+import { loadItems } from "../state/actions/item-actions";
 
-const mapStateToProps = (state, ownProps) => {
-    const selectedCustomer = state.customers.list.find(customer => customer.id === ownProps.selectedCustomerId);
+const mapStateToProps = (state) => {
     return {
-        items: selectedCustomer ? selectedCustomer.items : [],
-        payments: selectedCustomer ? selectedCustomer.payments: []
+        items: state.items.list,
+        payments: state.payments.list,
+        numNextItems: state.items.remainingNext,
+        numPrevItems: state.items.remainingPrev
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onItemClick: (id) => console.log('select item', id)
+    onItemClick: (id) => console.log('select item', id),
+    loadItems: (customerId, offset, limit) => dispatch(loadItems(customerId, offset, limit))
 });
 
 export const CustomerItemListContainer = connect(

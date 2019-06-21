@@ -55,7 +55,7 @@ export class OverviewScreen extends React.Component {
                 </div>
                 <div className="column full-height">
                     <div className="panel full-height overview-mid-panel">
-                        <CustomerItemListContainer selectedCustomerId={customerId} />
+                        <CustomerItemListContainer customerId={customerId} />
                         <div className="sum">
                             <div>Summe</div><div>{this.props.total > 0 ? '+' : ''}{this.props.total.toFixed(2)} €</div>
                         </div>

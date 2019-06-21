@@ -2,23 +2,12 @@ import Dexie from 'dexie';
 import { initialUserState } from './reducers/users';
 
 const db = new Dexie('db-name');
-db.version(1).stores({
-    customers: 'id++, name, timestamp, createdBy',
+db.version(4).stores({
+    customers: 'id++, name, timestamp, createdBy, total, lastOrder, lastPayment',
     users: 'id++, name, password, timestamp, createdBy',
     products: 'id++, name, price, category, timestamp, createdBy',
-    items: 'id++, name, amount, price, category, timestamp, customerId',
+    items: 'id++, name, amount, price, category, timestamp, customerId, isPaid',
     payments: 'id++, amount, timestamp, customerId'
-});
-db.version(2).stores({
-    customers: 'id++, name, timestamp, createdBy, total',
-    users: 'id++, name, password, timestamp, createdBy',
-    products: 'id++, name, price, category, timestamp, createdBy',
-    items: 'id++, name, amount, price, category, timestamp, customerId',
-    payments: 'id++, amount, timestamp, customerId'
-}).upgrade(tx => {
-    return tx.customers.toCollection().modify(customer => {
-        customer.total = 0;
-    });
 });
 
 db.on("populate", () => {

@@ -2,17 +2,10 @@ import { connect } from "react-redux";
 import { HistoryPopup } from "../../../components/utils/popups/HistoryPopup";
 import { clearAllTransactions } from "../../../state/actions/customer-actions";
 
-const mapStateToProps = (state, ownProps) => {
-    const foundCustomer = state.customers.list.find(customer => customer.id === Number(ownProps.customerId));
-    let items = [];
-    let payments = [];
-    if (foundCustomer) {
-        items = foundCustomer.items;
-        payments = foundCustomer.payments;
-    }
+const mapStateToProps = state => {
     return {
-        items,
-        payments,
+        items: state.items.list,
+        payments: state.payments.list,
         users: state.users.list
     };
 };

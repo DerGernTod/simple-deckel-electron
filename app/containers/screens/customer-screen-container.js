@@ -4,15 +4,14 @@ import { addCustomer, deleteCustomer, loadCustomers } from "../../state/actions/
 import { changeKeyboardTarget } from "../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
-    const customers = state.customers.list.map(({id, name, total, items, payments, createdBy, timestamp}) => ({
+    const customers = state.customers.list.map(({id, name, total, createdBy, timestamp, lastOrder, lastPayment}) => ({
             id,
             name,
             total,
-            items,
             createdBy: state.users.list.find(user => user.id === createdBy).name,
             timestamp,
-            lastOrder: items.reduce((maxTimestamp, curItem) => Math.max(maxTimestamp, curItem.timestamp), 0),
-            lastPayment: payments.reduce((maxTimestamp, curItem) => Math.max(maxTimestamp, curItem.timestamp), 0)
+            lastOrder,
+            lastPayment
         }));
     return {
         customers,
