@@ -1,5 +1,6 @@
 import { ITEMS_ADD, STATUS_LOADING, STATUS_SAVE_COMPLETE, ITEMS_LIST } from "../actions";
 import { DataBase } from "../db";
+import { DB_LIMITS } from "../../constants";
 
 export function loadItems(customerId, offset = 0, limit = 0, includePaid = false) {
     return async dispatch => {

@@ -10,7 +10,7 @@ export function loadPayments(customerId, offset = 0, limit = 0) {
         try {
             const payments = await DataBase.table('payments').where('customerId').equals(customerId).reverse().sortBy('timestamp');
             dispatch({
-                type: ITEMS_LIST,
+                type: PAYMENT_LIST,
                 payload: payments.reduce((payload, payment, curIndex) => {
                     // skip all indizes before offset
                     if (curIndex < offset) {
