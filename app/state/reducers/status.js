@@ -18,12 +18,12 @@ export function status(state = initialState, action) {
         case STATUS_SAVE_COMPLETE:
             return {
                 ...state, 
-                loading: status.loading - 1
+                loading: state.loading - 1
             };
         case STATUS_LOADING:
             return {
                 ...state,
-                loading: status.loading + 1
+                loading: state.loading + 1
             };
         case STATUS_KEYBOARD_TARGET_CHANGE:
             return {

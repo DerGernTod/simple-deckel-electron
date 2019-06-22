@@ -11,6 +11,10 @@ export class CustomerScreen extends React.Component {
                 id: -1,
                 name: ''
             },
+            editing: {
+                id: -1,
+                name: ''
+            },
             errors: []
         }
     }
@@ -29,6 +33,15 @@ export class CustomerScreen extends React.Component {
         });
         this.deletePopup.show();
     }
+    editCustomer(id, name) {
+        this.setState({
+            editing: {
+                id,
+                name
+            }
+        });
+        this.editPopup.show();
+    }
     resetErrors() {
         this.setState({
             errors: []
@@ -43,9 +56,31 @@ export class CustomerScreen extends React.Component {
             return false;
         }
         this.props.onCustomerAdded(nameValue, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
-        this.props.updateKeyboardTarget('', () => void 0, '');
+        this.resetKeyboard();
         this.nameInput.reset();
         return true;
+    }
+    validateEdit() {
+        const nameValue = this.editNameInput.getValue();
+        if (!nameValue || nameValue.length === 0) {
+            this.setState({
+                errors: ['Bitte Namen angeben']
+            });
+            return false;
+        }
+        this.props.onCustomerUpdated(this.state.editing.id, nameValue, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
+        this.resetKeyboard();
+        this.editNameInput.reset();
+        this.setState({
+            editing: {
+                id: -1,
+                name: ''
+            }
+        });
+        return true;
+    }
+    resetKeyboard() {
+        this.props.updateKeyboardTarget('', () => void 0, '');
     }
     render() {
         if (this.props.loggedInUser.id < 0) {
@@ -63,6 +98,10 @@ export class CustomerScreen extends React.Component {
                     onShow={() => {
                         this.nameInput.focus();
                     }}
+                    onHide={() => {
+                        this.nameInput.reset();
+                        this.resetKeyboard();
+                    }}
                     onConfirmed={() => this.validateAdd()}
                     title='Kunden hinzufügen'
                     ref={popup => this.addPopup = popup}>
@@ -72,6 +111,31 @@ export class CustomerScreen extends React.Component {
                             <VKeyboardTextInputContainer type='text'
                                 id='add-customer-popup-name'
                                 ref={input => this.nameInput = input}
+                                placeholder='z.B. Brucker'
+                                onFocus={e => this.resetErrors()}
+                            ></VKeyboardTextInputContainer>
+                        </div>
+                        <ul>{this.state.errors.map(error => <li>{error}</li>)}</ul>
+                    </div>
+                </ConfirmPopup>
+                <ConfirmPopup
+                    onShow={() => {
+                        this.editNameInput.handleChange(String(this.state.editing.name), true);
+                        this.editNameInput.focus();
+                    }}
+                    onHide={() => {
+                        this.editNameInput.reset();
+                        this.resetKeyboard();
+                    }}
+                    onConfirmed={() => this.validateEdit()}
+                    title={`Kunden "${this.state.editing.name}" bearbeiten`}
+                    ref={popup => this.editPopup = popup}>
+                    <div className='add-customer-popup'>
+                        <div>
+                            <label htmlFor='edit-customer-popup-name'>Name</label>
+                            <VKeyboardTextInputContainer type='text'
+                                id='edit-customer-popup-name'
+                                ref={input => this.editNameInput = input}
                                 placeholder='z.B. Brucker'
                                 onFocus={e => this.resetErrors()}
                             ></VKeyboardTextInputContainer>
@@ -96,6 +160,7 @@ export class CustomerScreen extends React.Component {
                                     <th>Ersteller</th>
                                     <th>Erstellt am</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,6 +171,7 @@ export class CustomerScreen extends React.Component {
                                     <td>{lastPayment ? formatter.format(lastPayment) : 'Nie'}</td>
                                     <td>{createdBy}</td>
                                     <td>{formatter.format(timestamp)}</td>
+                                    <td><button onClick={() => this.editCustomer(id, name)}>Bearbeiten</button></td>
                                     <td><button onClick={() => this.deleteCustomer(id, name)}>Löschen</button></td>
                                 </tr>)}
                             </tbody>

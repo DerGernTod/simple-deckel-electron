@@ -59,7 +59,7 @@ export function addItems(customerId, items) {
             const customer = await DataBase.table('customers').get(customerId);
             const newTotal = customer.total - itemsTotal;
             await DataBase.table('customers').update(customerId, { total: newTotal, lastOrder: timestamp });
-            const customerItems = await DataBase.table('items').where('customerId').equals(customerId).reverse().sortBy('timestamp');
+            const customerItems = await DataBase.table('items').where('customerId').equals(customerId).and(item => !item.isPaid).reverse().sortBy('timestamp');
             dispatch({
                 type: ITEMS_ADD,
                 payload: {

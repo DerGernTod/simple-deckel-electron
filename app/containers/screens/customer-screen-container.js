@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { CustomerScreen } from "../../components/screens/CustomerScreen";
-import { addCustomer, deleteCustomer, loadCustomers } from "../../state/actions/customer-actions";
+import { addCustomer, deleteCustomer, loadCustomers, updateCustomer } from "../../state/actions/customer-actions";
 import { changeKeyboardTarget } from "../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     onCustomerAdded: (name, createdBy) => dispatch(addCustomer(name, createdBy)),
     onCustomerDeleted: (customerId) => dispatch(deleteCustomer(customerId)),
+    onCustomerUpdated: (customerId, name, editedBy) => dispatch(updateCustomer(customerId, name, editedBy)),
     loadCustomers: () => dispatch(loadCustomers()),
     updateKeyboardTarget: (target, callback, value) => dispatch(changeKeyboardTarget(target, callback, value)),
 });

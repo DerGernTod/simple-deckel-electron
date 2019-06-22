@@ -129,6 +129,16 @@ html,
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 18pt;
 }
+div.popup > div.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+div.popup > div.spinner svg {
+  height: 100%;
+  width: 100%;
+}
 button {
   font-size: 18pt;
   padding: 20px;

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
 import { CustomerListContainer } from '../../containers/customer-list-container';
 import { CustomerItemListContainer } from '../../containers/customer-item-list-container';
 import { LoginPopupContainer } from '../../containers/utils/popups/login-popup-container';

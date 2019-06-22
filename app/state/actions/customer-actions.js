@@ -77,28 +77,37 @@ export function deleteCustomer(id) {
     };
 }
 
-export function updateCustomer(id, name, items) {
-    return {
-        type: CUSTOMER_UPDATE,
-        payload: {
-            id, 
-            name, 
-            items
+export function updateCustomer(id, name, editedBy) {
+    return async (dispatch) => {
+        dispatch({ type: STATUS_LOADING });
+        
+        try {
+            await DataBase.table('customers').update(id, { name, createdBy: editedBy });
+            dispatch({
+                type: CUSTOMER_UPDATE,
+                payload: await DataBase.table('customers').get(id)
+            });
+        } finally {
+            dispatch({ type: STATUS_SAVE_COMPLETE });
         }
     };
 }
 
 export function clearAllTransactions(customerId) {
     return (dispatch) => {
-        dispatch({
-            type: STATUS_LOADING
-        });
+        dispatch({ type: STATUS_LOADING });
         DataBase.transaction('rw', DataBase.items, DataBase.customers, DataBase.payments, async () => {
             try {
 
                 await DataBase.table('items').where('customerId').equals(customerId).delete(),
                 await DataBase.table('payments').where('customerId').equals(customerId).delete()
-                await DataBase.table('customers').update('customerId', { total: 0 });
+                await DataBase.table('customers').update(customerId, { total: 0 });
+                dispatch({
+                    type: CUSTOMER_CLEAR,
+                    payload: {
+                        id: customerId
+                    }
+                });
             } finally {
                 dispatch({ type: STATUS_SAVE_COMPLETE });
             }

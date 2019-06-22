@@ -6,11 +6,16 @@ export class Popup extends React.Component {
         this.state = {
             isVisible: false
         }
-        document.addEventListener('keyup', (evt) => evt.key === 'Escape' && this.hide())
+        document.addEventListener('keyup', (evt) => evt.key === 'Escape' && this.hideIfCanBeHidden())
     }
     componentDidUpdate(oldProps, oldState) {
         if (this.state.isVisible && !oldState.isVisible) {
             this.props.onShow && this.props.onShow();
+        }
+    }
+    hideIfCanBeHidden() {
+        if (this.getButtons()) {
+            this.hide();
         }
     }
     hide() {
@@ -42,7 +47,7 @@ export class Popup extends React.Component {
             height: this.props.height || '300px'
         }
         return (
-            <div onClick={() => this.hide()} className='popup-underlay' style={style}>
+            <div onClick={() => this.hideIfCanBeHidden()} className='popup-underlay' style={style}>
                 <div className='popup' onClick={(e) => e.stopPropagation()} style={popupSize}>
                     <div>{props.title}</div>
                     {this.getContent()}

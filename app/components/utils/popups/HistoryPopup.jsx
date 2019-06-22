@@ -45,6 +45,7 @@ export class HistoryPopup extends Popup {
             remainingPrev,
             offset
         });
+        this.props.onLoadComplete();
     }
     componentWillReceiveProps(newProps) {
         const creators = {};
