@@ -425,6 +425,17 @@ table tr {
   background-color: #9ae0b5;
   box-shadow: 0 0 5px inset;
 }
+tr.controls {
+  border: 1px solid black;
+  background-color: white;
+}
+tr.controls:hover {
+  background-color: lightblue;
+}
+tr.controls:active {
+  background-color: #9ae0b5;
+  box-shadow: 0 0 5px inset;
+}
 .customer-details-list tbody tr {
   background-color: #f7f7f7;
 }

@@ -88,22 +88,20 @@ export function updateCustomer(id, name, items) {
     };
 }
 
-export function addPayment(customerId, amount, createdBy) {
-    return {
-        type: PAYMENT_ADD,
-        payload: {
-            id: customerId,
-            amount,
-            createdBy
-        }
-    };
-}
-
 export function clearAllTransactions(customerId) {
-    return {
-        type: CUSTOMER_CLEAR,
-        payload: {
-            id: customerId
-        }
+    return (dispatch) => {
+        dispatch({
+            type: STATUS_LOADING
+        });
+        DataBase.transaction('rw', DataBase.items, DataBase.customers, DataBase.payments, async () => {
+            try {
+
+                await DataBase.table('items').where('customerId').equals(customerId).delete(),
+                await DataBase.table('payments').where('customerId').equals(customerId).delete()
+                await DataBase.table('customers').update('customerId', { total: 0 });
+            } finally {
+                dispatch({ type: STATUS_SAVE_COMPLETE });
+            }
+        });
     };
 }

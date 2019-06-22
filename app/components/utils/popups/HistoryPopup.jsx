@@ -2,12 +2,49 @@ import React from 'react';
 import { Popup } from "./Popup";
 import PropTypes from "prop-types";
 import { ConfirmPopup } from './ConfirmPopup';
+import { DataBase } from '../../../state/db';
+import { DB_HISTORY_LIMITS } from '../../../constants';
 export class HistoryPopup extends Popup {
     constructor(props) {
         super(props);
         this.state = {
-            creators: {}
+            creators: {},
+            history: [],
+            offset: 0,
+            remainingPrev: 0,
+            remainingNext: 0
         };
+    }
+    componentDidUpdate(oldProps, oldState) {
+        if (this.state.isVisible && !oldState.isVisible) {
+            this.loadItemsAndPayments(this.state.offset, DB_HISTORY_LIMITS);
+        }
+    }
+    async loadItemsAndPayments(offset, limit) {
+        this.props.onLoadStart();
+        const totalItems = []
+            .concat(
+                await DataBase.table('items').where('customerId').equals(this.props.customerId).toArray(),
+                await DataBase.table('payments').where('customerId').equals(this.props.customerId).toArray())
+            .sort((a, b) => b.timestamp - a.timestamp);
+        const { list, remainingNext, remainingPrev } = totalItems
+            .reduce((historyStatus, curElem, index) => {
+                if (index < offset) {
+                    return historyStatus;
+                }
+                if (historyStatus.list.length >= limit) {
+                    historyStatus.remainingPrev++;
+                    return historyStatus;
+                }
+                historyStatus.list.push(curElem);
+                return historyStatus;
+            }, { list: [], remainingPrev: 0, remainingNext: offset });
+        this.setState({
+            history: list,
+            remainingNext,
+            remainingPrev,
+            offset
+        });
     }
     componentWillReceiveProps(newProps) {
         const creators = {};
@@ -18,6 +55,7 @@ export class HistoryPopup extends Popup {
     }
     delete() {
         this.props.onClear(this.props.customerId);
+        this.hide();
     }
     getButtons() {
         return (
@@ -27,9 +65,10 @@ export class HistoryPopup extends Popup {
             </div>
         );
     }
+    loadMore(older) {
+        this.loadItemsAndPayments(Math.max(0, this.state.offset + DB_HISTORY_LIMITS * (older ? 1 : -1)), DB_HISTORY_LIMITS);
+    }
     getContent() {
-        const collectedList = this.props.items.concat(this.props.payments);
-        collectedList.sort((a, b) => a.timestamp - b.timestamp);
         let entryCounter = 0;
         let dateFormat = new Intl.DateTimeFormat('de', {
             year: 'numeric',
@@ -40,7 +79,7 @@ export class HistoryPopup extends Popup {
         });
         return (
             <div className='history-popup'>
-                <ConfirmPopup title='Wirklich löschen?' ref={popup => this.confirmPopup = popup} onConfirmed={() => this.delete()} confirmText='Alles löschen'>Wirklich sämtliche Einträge löschen?</ConfirmPopup>
+                <ConfirmPopup title='Wirklich löschen?' ref={popup => this.confirmPopup = popup} onConfirmed={() => this.delete()} confirmText='Alles löschen'><div>Wirklich sämtliche Einträge löschen?</div></ConfirmPopup>
                 <table className='history'>
                     <thead>
                         <tr>
@@ -51,7 +90,8 @@ export class HistoryPopup extends Popup {
                         </tr>
                     </thead>
                     <tbody>
-                        {collectedList.map(entry => {
+                        {this.state.remainingNext ? <tr className="controls" onClick={() => this.loadMore(false)}><td colSpan="4">{this.state.remainingNext} neuere</td></tr> : null}
+                        {this.state.history.map(entry => {
                             const isPayment = !entry.category;
                             entryCounter++;
                             if (isPayment) {
@@ -70,6 +110,7 @@ export class HistoryPopup extends Popup {
                                 </tr>;
                             }
                         })}
+                        {this.state.remainingPrev ? <tr className="controls" onClick={() => this.loadMore(true)}><td colSpan="4">{this.state.remainingPrev} ältere</td></tr> : null}
                     </tbody>
                 </table>
             </div>
@@ -81,22 +122,10 @@ HistoryPopup.propTypes = {
     ...Popup.propTypes,
     onClear: PropTypes.func.isRequired,
     customerId: PropTypes.number.isRequired,
-    items: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        amount: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        category: PropTypes.string.isRequired,
-    })),
-    payments: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        amount: PropTypes.number.isRequired,
-        createdBy: PropTypes.number.isRequired,
-        timestamp: PropTypes.number.isRequired
-    })),
     users: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired
-    }))
+    })),
+    onLoadStart: PropTypes.func.isRequired,
+    onLoadComplete: PropTypes.func.isRequired
 };
