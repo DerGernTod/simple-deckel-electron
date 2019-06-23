@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { UserScreen } from "../../components/screens/UserScreen";
-import { addUser, deleteUser } from "../../state/actions/user-actions";
+import { addUser, deleteUser, updateUser } from "../../state/actions/user-actions";
 import { changeKeyboardTarget } from "../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     onUserAdded: (name, password, createdBy) => dispatch(addUser(name, password, createdBy)),
     onUserDeleted: (userId) => dispatch(deleteUser(userId)),
+    onUserUpdated: (id, name, password, editedBy) => dispatch(updateUser(id, name, password, editedBy)),
     updateKeyboardTarget: (target, callback, value) => dispatch(changeKeyboardTarget(target, callback, value)),
 });
 

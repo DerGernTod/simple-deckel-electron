@@ -23,32 +23,61 @@ export function loadUsers() {
 }
 
 export function addUser(name, password, createdBy) {
-    return {
-        type: USER_ADD,
-        payload: {
-            name, 
+    return (dispatch) => {
+        dispatch({ type: STATUS_LOADING });
+        const newUser = {
+            name,
             password,
-            createdBy
-        }
+            createdBy,
+            timestamp: Date.now()
+        };
+        DataBase.table('users').add(newUser)
+        .then(id => dispatch({
+            type: USER_ADD,
+            payload: { 
+                id,
+                ...newUser
+            }
+        }))
+        .finally(() => {
+            dispatch({ type: STATUS_SAVE_COMPLETE });
+        });
     };
 }
 
 export function deleteUser(id) {
-    return {
-        type: USER_DELETE,
-        payload: {
-            id
-        }
+    return (dispatch) => {
+        dispatch({ type: STATUS_LOADING });
+        DataBase.table('users').delete(id)
+            .then(() => dispatch({
+                type: USER_DELETE,
+                payload: { id }
+            }))
+            .finally(() => {
+                dispatch({ type: STATUS_SAVE_COMPLETE });
+            });
     };
 }
 
-export function updateUser(id, name, password) {
-    return {
-        type: USER_UPDATE,
-        payload: {
-            id, 
-            name, 
-            password
-        }
+export function updateUser(id, name, password, editedBy) {
+    return (dispatch) => {
+        dispatch({ type: STATUS_LOADING });
+        const updatedUser = {
+            id,
+            name,
+            password,
+            createdBy: editedBy,
+            timestamp: Date.now()
+        };
+        DataBase.table('users').update(id, updatedUser)
+            .then(() => {
+                dispatch({
+                    type: USER_UPDATE,
+                    payload: updatedUser
+                });
+            })
+            .finally(() => {
+                dispatch({ type: STATUS_SAVE_COMPLETE });
+            });
     };
 }

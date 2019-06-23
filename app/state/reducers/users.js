@@ -18,11 +18,7 @@ export function users(state = initialState, action) {
         case USER_ADD:
             return {
                 ...state,
-                list: state.list.concat([{
-                    id: state.nextUserId++,
-                    timestamp: Date.now(),
-                    ...action.payload
-                }])
+                list: state.list.concat([action.payload])
             };
         case USER_DELETE:
             return {
@@ -32,7 +28,7 @@ export function users(state = initialState, action) {
         case USER_UPDATE:
             return {
                 ...state,
-                list: state.map(elem => elem.id === action.payload.id ? action.payload : elem)
+                list: state.list.map(elem => elem.id === action.payload.id ? action.payload : elem)
             };
         case USER_LOAD:
             return {

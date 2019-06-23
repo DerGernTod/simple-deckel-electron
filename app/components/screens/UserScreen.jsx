@@ -12,6 +12,10 @@ export class UserScreen extends React.Component {
                 id: -1,
                 name: ''
             },
+            editing: {
+                id: -1,
+                name: ''
+            },
             errors: []
         }
     }
@@ -29,10 +33,29 @@ export class UserScreen extends React.Component {
         });
         this.deletePopup.show();
     }
+    editUser(id, name) {
+        this.setState({
+            editing: {
+                id,
+                name
+            }
+        });
+        this.editPopup.show();
+    }
     resetErrors() {
         this.setState({
             errors: []
         });
+    }
+    onAddShow() {
+        this.nameInput.reset();
+        this.nameInput.focus();
+    }
+    onEditShow() {
+        this.editNameInput.handleChange(this.state.editing.name, true);
+        this.editPwInput.reset();
+        this.editPw2Input.reset();
+        this.editNameInput.focus();
     }
     validateAdd() {
         const nameValue = this.nameInput.getValue();
@@ -58,6 +81,34 @@ export class UserScreen extends React.Component {
         this.props.updateKeyboardTarget('', () => void 0, '');
         return true;
     }
+    
+    validateEdit() {
+        const nameValue = this.editNameInput.getValue();
+        const pw1Value = this.editPwInput.getValue();
+        const pw2Value = this.editPw2Input.getValue();
+        const errors = [];
+        if (!nameValue || nameValue.length === 0) {
+            errors.push('Bitte Namen angeben.');
+        }
+        if (!pw1Value || pw1Value.length < 6) {
+            errors.push('Passwort muss mindestens 6 Zeichen enthalten.')
+        }
+        if (pw1Value !== pw2Value) {
+            errors.push('Passworter stimmen nicht überein.');
+        }
+        if (errors.length) {
+            this.setState({
+                errors
+            });
+            return false;
+        }
+        this.props.onUserUpdated(this.state.editing.id, nameValue, pw1Value, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
+        this.props.updateKeyboardTarget('', () => void 0, '');
+        return true;
+    }
+    resetKeyboard() {
+        this.props.updateKeyboardTarget('', () => void 0, '');
+    }
     render() {
         if (this.props.loggedInUser.id < 0) {
             setTimeout(() => this.props.history.push('/overview'), 3000);
@@ -71,30 +122,64 @@ export class UserScreen extends React.Component {
         const deleteEnabled = this.props.users.length > 1;
         return (
             <React.Fragment>
-                <ConfirmPopup onConfirmed={() => this.validateAdd()} title='Kunden hinzufügen' ref={popup => this.addPopup = popup} width="500px" height="400px">
+            <ConfirmPopup onHide={() => this.resetKeyboard()} onShow={() => this.onAddShow()} onConfirmed={() => this.validateAdd()} title='Kunden hinzufügen' ref={popup => this.addPopup = popup} width="500px" height="400px">
+                <div className='add-user-popup'>
+                    <div>
+                        <label htmlFor='add-user-popup-name'>Name</label>
+                        <VKeyboardTextInputContainer type='text'
+                            id='add-user-popup-name'
+                            ref={input => this.nameInput = input}
+                            placeholder='z.B. Brucker'
+                            onFocus={e => this.resetErrors()}
+                        ></VKeyboardTextInputContainer>
+                    </div>
+                    <div>
+                        <label htmlFor='add-user-popup-pw'>Passwort</label>
+                        <VKeyboardTextInputContainer type='password'
+                            id='add-user-popup-pw'
+                            ref={input => this.pwInput = input}
+                            onFocus={e => this.resetErrors()}
+                        ></VKeyboardTextInputContainer>
+                    </div>
+                    <div>
+                        <label htmlFor='add-user-popup-pw2'>Passwort wiederholen</label>
+                        <VKeyboardTextInputContainer type='password'
+                            id='add-user-popup-pw2'
+                            ref={input => this.pw2Input = input}
+                            onFocus={e => this.resetErrors()}
+                        ></VKeyboardTextInputContainer>
+                    </div>
+                    <ul>{this.state.errors.map(error => <li>{error}</li>)}</ul>
+                </div>
+            </ConfirmPopup>
+                <ConfirmPopup
+                    onConfirmed={() => this.validateEdit()} title={`${this.state.editing.name} bearbeiten`}
+                    ref={popup => this.editPopup = popup} width="500px" height="400px"
+                    onHide={() => this.resetKeyboard()}
+                    onShow={() => this.onEditShow()}>
                     <div className='add-user-popup'>
                         <div>
-                            <label htmlFor='add-user-popup-name'>Name</label>
+                            <label htmlFor='edit-user-popup-name'>Name</label>
                             <VKeyboardTextInputContainer type='text'
-                                id='add-user-popup-name'
-                                ref={input => this.nameInput = input}
+                                id='edit-user-popup-name'
+                                ref={input => this.editNameInput = input}
                                 placeholder='z.B. Brucker'
                                 onFocus={e => this.resetErrors()}
                             ></VKeyboardTextInputContainer>
                         </div>
                         <div>
-                            <label htmlFor='add-user-popup-pw'>Passwort</label>
+                            <label htmlFor='edit-user-popup-pw'>Passwort</label>
                             <VKeyboardTextInputContainer type='password'
-                                id='add-user-popup-pw'
-                                ref={input => this.pwInput = input}
+                                id='edit-user-popup-pw'
+                                ref={input => this.editPwInput = input}
                                 onFocus={e => this.resetErrors()}
                             ></VKeyboardTextInputContainer>
                         </div>
                         <div>
-                            <label htmlFor='add-user-popup-pw2'>Passwort wiederholen</label>
+                            <label htmlFor='edit-user-popup-pw2'>Passwort wiederholen</label>
                             <VKeyboardTextInputContainer type='password'
-                                id='add-user-popup-pw2'
-                                ref={input => this.pw2Input = input}
+                                id='edit-user-popup-pw2'
+                                ref={input => this.editPw2Input = input}
                                 onFocus={e => this.resetErrors()}
                             ></VKeyboardTextInputContainer>
                         </div>
@@ -115,6 +200,7 @@ export class UserScreen extends React.Component {
                                     <th>Ersteller</th>
                                     <th>Erstellt am</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -122,6 +208,7 @@ export class UserScreen extends React.Component {
                                     <td>{name}</td>
                                     <td>{createdBy}</td>
                                     <td>{formatter.format(timestamp)}</td>
+                                    <td><button onClick={() => this.editUser(id, name)}>Bearbeiten</button></td>
                                     <td><button disabled={!deleteEnabled} onClick={() => this.deleteUser(id, name)}>Löschen</button></td>
                                 </tr>)}
                             </tbody>
@@ -158,5 +245,6 @@ UserScreen.propTypes = {
     }),
     onUserAdded: PropTypes.func.isRequired,
     onUserDeleted: PropTypes.func.isRequired,
+    onUserUpdated: PropTypes.func.isRequired,
     updateKeyboardTarget: PropTypes.func.isRequired
 };
