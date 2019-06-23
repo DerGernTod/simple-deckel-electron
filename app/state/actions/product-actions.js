@@ -54,18 +54,29 @@ export function deleteProduct(id) {
             payload: {
                 id
             }
-        }));
+        }))
+        .finally(() => dispatch({ type: STATUS_SAVE_COMPLETE }));
     };
 }
 
-export function updateProduct(id, name, category, price) {
-    return {
-        type: PRODUCT_UPDATE,
-        payload: {
+export function updateProduct(id, name, price, category, editedBy) {
+    return (dispatch) => {
+        dispatch({
+            type: STATUS_LOADING
+        });
+        const updatedItem = {
             id, 
             name, 
-            category, 
-            price
+            category,
+            price,
+            createdBy: editedBy,
+            timestamp: Date.now()
         }
+        DataBase.table('products').update(id, updatedItem)
+        .then(() => dispatch({
+            type: PRODUCT_UPDATE,
+            payload: updatedItem
+        }))
+        .finally(() => dispatch({ type: STATUS_SAVE_COMPLETE }));
     };
 }

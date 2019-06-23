@@ -6,6 +6,7 @@ import { LoginPopupContainer } from '../../containers/utils/popups/login-popup-c
 import { CartPopupContainer } from '../../containers/utils/popups/cart-popup-container';
 import { PaymentPopupContainer } from '../../containers/utils/popups/payment-popup-container';
 import { HistoryPopupContainer } from '../../containers/utils/popups/history-popup-container';
+import { ItemDetailsPopup } from '../utils/popups/ItemDetailsPopup';
 
 export class OverviewScreen extends React.Component {
     constructor(props) {

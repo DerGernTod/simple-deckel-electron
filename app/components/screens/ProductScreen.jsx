@@ -18,6 +18,12 @@ export class ProductScreen extends React.Component {
                 price: 0,
                 category: CATEGORIES.MISC
             },
+            editing: {
+                id: -1,
+                name: '',
+                price: 0,
+                category: CATEGORIES.MISC
+            },
             errors: []
         }
     }
@@ -26,7 +32,14 @@ export class ProductScreen extends React.Component {
     }
     showAddPopup() {
         this.addPopup.show();
-        setTimeout(() => this.nameInput.focus(), 0);
+    }
+    onAddShow() {
+        this.nameInput.focus();
+    }
+    onEditShow() {
+        this.editPriceInput.handleChange(String(this.state.editing.price), true);
+        this.editNameInput.handleChange(this.state.editing.name, true);
+        this.editNameInput.focus();
     }
     deleteProduct(id, name) {
         this.setState({
@@ -36,6 +49,17 @@ export class ProductScreen extends React.Component {
             }
         });
         this.deletePopup.show();
+    }
+    editProduct(id, name, price, category) {
+        this.setState({
+            editing: {
+                id,
+                name,
+                price,
+                category
+            }
+        });
+        this.editPopup.show();
     }
     resetErrors() {
         this.setState({
@@ -56,6 +80,20 @@ export class ProductScreen extends React.Component {
         this.nameInput.reset();
         return true;
     }
+    validateEdit() {
+        const nameValue = this.editNameInput.getValue();
+        if (!nameValue || nameValue.length === 0) {
+            this.setState({
+                errors: ['Bitte Namen angeben']
+            });
+            return false;
+        }
+        this.props.onProductUpdated(this.state.editing.id, nameValue, this.editPriceInput.getValue(), this.state.editing.category, this.props.loggedInUser.id < 0 ? 0 : this.props.loggedInUser.id);
+        this.props.updateKeyboardTarget('', () => void 0, '');
+        this.editPriceInput.reset();
+        this.editNameInput.reset();
+        return true;
+    }
     render() {
         if (this.props.loggedInUser.id < 0) {
             setTimeout(() => this.props.history.push('/overview'), 3000);
@@ -68,7 +106,7 @@ export class ProductScreen extends React.Component {
         });
         return (
             <React.Fragment>
-                <ConfirmPopup onHide={() => this.props.updateKeyboardTarget('', () => void 0, '')} onConfirmed={() => this.validateAdd()} title='Produkt hinzufügen' ref={popup => this.addPopup = popup} width="400px" height="350px">
+                <ConfirmPopup onShow={() => this.onAddShow()} onHide={() => this.props.updateKeyboardTarget('', () => void 0, '')} onConfirmed={() => this.validateAdd()} title='Produkt hinzufügen' ref={popup => this.addPopup = popup} width="400px" height="350px">
                     <div className='add-product-popup'>
                         <div>
                             <label htmlFor='add-product-popup-name'>Name</label>
@@ -105,6 +143,47 @@ export class ProductScreen extends React.Component {
                         <ul>{this.state.errors.map(error => <li>{error}</li>)}</ul>
                     </div>
                 </ConfirmPopup>
+                <ConfirmPopup onShow={() => this.onEditShow()}
+                        onHide={() => this.props.updateKeyboardTarget('', () => void 0, '')}
+                        onConfirmed={() => this.validateEdit()}
+                        title={`${this.state.editing.name} bearbeiten`}
+                        ref={popup => this.editPopup = popup} width="400px" height="350px">
+                    <div className='add-product-popup'>
+                        <div>
+                            <label htmlFor='edit-product-popup-name'>Name</label>
+                            <VKeyboardTextInputContainer type='text'
+                                id='edit-product-popup-name'
+                                ref={input => this.editNameInput = input}
+                                placeholder='z.B. Schnitzel'
+                                onFocus={e => this.resetErrors()}
+                            ></VKeyboardTextInputContainer>
+                        </div>
+                        <div>
+                            <label htmlFor='edit-product-popup-price'>Preis</label>
+                            <VKeyboardNumericInputContainer
+                                id='edit-product-popup-price'
+                                ref={input => this.editPriceInput = input}
+                                type='number'
+                                min='0'
+                                max='1000'
+                                step='0.1'
+                                onFocus={e => this.resetErrors()}
+                            ></VKeyboardNumericInputContainer>
+                        </div>
+                        <div>
+                            <label htmlFor='edit-product-popup-category'>Kategorie</label>
+                            <select
+                                id='edit-product-popup-category'
+                                value={this.state.editing.category}
+                                onChange={(e) => this.setState({editing: {...this.state.editing, category: e.target.value}})}>
+                                <option>{CATEGORIES.DRINKS}</option>
+                                <option>{CATEGORIES.FOOD}</option>
+                                <option>{CATEGORIES.MISC}</option>
+                            </select>
+                        </div>
+                        <ul>{this.state.errors.map(error => <li>{error}</li>)}</ul>
+                    </div>
+                </ConfirmPopup>
                 <ConfirmPopup onConfirmed={() => this.props.onProductDeleted(this.state.deletion.id)} title='Wirklich löschen?' ref={popup => this.deletePopup = popup} confirmText='Löschen'>
                     <div>
                         Soll '{this.state.deletion.name}' wirklich gelöscht werden?
@@ -121,6 +200,7 @@ export class ProductScreen extends React.Component {
                                     <th>Ersteller</th>
                                     <th>Erstellt am</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,6 +210,7 @@ export class ProductScreen extends React.Component {
                                     <td>{category}</td>
                                     <td>{createdBy}</td>
                                     <td>{formatter.format(timestamp)}</td>
+                                    <td><button onClick={() => this.editProduct(id, name, price, category)}>Bearbeiten</button></td>
                                     <td><button onClick={() => this.deleteProduct(id, name)}>Löschen</button></td>
                                 </tr>)}
                             </tbody>
@@ -168,6 +249,7 @@ ProductScreen.propTypes = {
     }),
     onProductAdded: PropTypes.func.isRequired,
     onProductDeleted: PropTypes.func.isRequired,
+    onProductUpdated: PropTypes.func.isRequired,
     updateKeyboardTarget: PropTypes.func.isRequired,
     loadProducts: PropTypes.func.isRequired
 }

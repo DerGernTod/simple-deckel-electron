@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { ProductScreen } from "../../components/screens/ProductScreen";
-import { addProduct, deleteProduct, loadProducts } from "../../state/actions/product-actions";
+import { addProduct, deleteProduct, loadProducts, updateProduct } from "../../state/actions/product-actions";
 import { changeKeyboardTarget } from "../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
@@ -21,6 +21,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     onProductAdded: (name, price, category, createdBy) => dispatch(addProduct(name, price, category, createdBy)),
     onProductDeleted: (productId) => dispatch(deleteProduct(productId)),
+    onProductUpdated: (id, name, price, category, editedBy) => dispatch(updateProduct(id, name, price, category, editedBy)),
     loadProducts: () => dispatch(loadProducts()),
     updateKeyboardTarget: (target, callback, value) => dispatch(changeKeyboardTarget(target, callback, value)),
 });

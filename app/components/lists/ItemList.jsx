@@ -2,12 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Item } from "../utils/Item"; 
 import { DB_LIMITS } from "../../constants";
+import { ItemDetailsPopup } from "../utils/popups/ItemDetailsPopup";
 
 export class ItemList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            itemOffset: 0
+            itemOffset: 0,
+            item: null
         };
     }
     componentDidMount() {
@@ -25,6 +27,12 @@ export class ItemList extends React.Component {
         });
         this.props.loadItems(this.props.customerId, newOffset, DB_LIMITS);
     }
+    onItemClick(item) {
+        this.setState({
+            item
+        });
+        this.itemDetailsPopup.show();
+    }
     render() {
         const items = this.props.items;
         const entries = [];
@@ -37,17 +45,21 @@ export class ItemList extends React.Component {
                     price = {-item.price}
                     category = {item.category}
                     amount = {item.amount}
-                    onClick = {() => this.props.onItemClick(item.id)}
+                    onClick = {() => this.onItemClick(item)}
                 />);
             }
         }
     
         return (
-            <ul className="item-list flex-list">
-                {this.props.numNextItems ? <li key='next-li' onClick={() => this.load(false)}>{this.props.numNextItems} neuere</li> : null}
-                {entries}
-                {this.props.numPrevItems ? <li key='prev-li' onClick={() => this.load(true)}>{this.props.numPrevItems} ältere</li> : null}
-            </ul>
+            <React.Fragment>
+                <ItemDetailsPopup item={this.state.item} ref={elem => this.itemDetailsPopup = elem} title='Details' />
+                <ul className="item-list flex-list">
+                    {this.props.numNextItems ? <li key='next-li' onClick={() => this.load(false)}>{this.props.numNextItems} neuere</li> : null}
+                    {entries}
+                    {this.props.numPrevItems ? <li key='prev-li' onClick={() => this.load(true)}>{this.props.numPrevItems} ältere</li> : null}
+                </ul>
+            </React.Fragment>
+            
         );
     }
 }
@@ -60,6 +72,5 @@ ItemList.propTypes = {
     })),
     numNextItems: PropTypes.number.isRequired,
     numPrevItems: PropTypes.number.isRequired,
-    onItemClick: PropTypes.func.isRequired,
     customerId: PropTypes.number.isRequired
 };
