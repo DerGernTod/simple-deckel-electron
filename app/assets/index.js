@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+// require('electron-debug')();
 let mainWindow;
 
 function createWindow() {
@@ -11,6 +12,7 @@ function createWindow() {
             devTools: false
         }
     });
+    // mainWindow.webContents.openDevTools();
     mainWindow.setMenu(null);
     mainWindow.setFullScreen(true);
     mainWindow.loadFile(__dirname + '/index.html');

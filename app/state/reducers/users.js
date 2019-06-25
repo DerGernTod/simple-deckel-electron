@@ -2,13 +2,7 @@ import { USER_ADD, USER_DELETE, USER_UPDATE, USER_LOAD } from "../actions";
 import { hash } from "../../hash";
 
 const initialState = {
-    list: [{
-        id: 0,
-        name: 'hans',
-        password: hash('wurst'),
-        createdBy: 0,
-        timestamp: 0
-    }],
+    list: [],
     nextUserId: 1
 };
 
