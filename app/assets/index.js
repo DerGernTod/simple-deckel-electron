@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require('electron');
-require('electron-debug')();
 let mainWindow;
 
 function createWindow() {
