@@ -22,7 +22,6 @@ export class UserScreen extends React.Component {
     showAddPopup() {
         this.addPopup.show()
         this.nameInput.focus();
-        this.nameInput.select();
     }
     deleteUser(id, name) {
         this.setState({

@@ -14,7 +14,7 @@ export class Popup extends React.Component {
         }
     }
     hideIfCanBeHidden() {
-        if (this.getButtons()) {
+        if (this.getButtons() && this.state.isVisible) {
             this.hide();
         }
     }

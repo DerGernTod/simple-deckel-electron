@@ -2,6 +2,7 @@ import React from 'react';
 import { Popup } from "./Popup";
 import PropTypes from "prop-types";
 import { VKeyboardTextInputContainer } from '../../../containers/utils/vkeyboard-text-input-container';
+import { hash } from '../../../hash';
 export class LoginPopup extends Popup {
     constructor(props) {
         super(props);
@@ -18,7 +19,7 @@ export class LoginPopup extends Popup {
     }
     hide() {
         super.hide();
-        this.passwordInput.reset();
+        this.passwordInput && this.passwordInput.reset();
         this.props.updateKeyboardTarget('', () => void 0, '');
     }
     getButtons() {
@@ -29,23 +30,30 @@ export class LoginPopup extends Popup {
             </div>
         );
     }
-    validate() {
+    triggerLogin(id, name) {
+        this.hide();
+        this.props.onLogin(id, name);
+        this.props.onConfirmed(name);
+    }
+    async validate() {
         const errors = [];
         const username = this.usernameInput.getValue();
         const password = this.passwordInput.getValue();
         if (!username) {
             errors.push('Bitte Benutzername angeben.');
         }
+        if(!this.props.users.length) {
+            this.triggerLogin(0, 'Kein Benutzer');
+            return;
+        }
         const foundUser = this.props.users.filter(user => user.name === username)[0];
         if (username && !foundUser) {
             errors.push('Unbekannter Benutzer.')
         } else if (foundUser) {
-            // todo: hash pw here
-            const hashedPw = password;
+            const hashedPw = await hash(password);
             if (foundUser.password === hashedPw) {
-                this.props.onLogin(foundUser.id, foundUser.name);
-                this.props.onConfirmed(foundUser.name);
-                this.hide();
+                this.triggerLogin(foundUser.id, foundUser.name);
+                return;
             } else if (hashedPw) {
                 errors.push('Falsches Passwort.');
             }

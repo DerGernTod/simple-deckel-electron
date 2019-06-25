@@ -4,12 +4,15 @@ import { addUser, deleteUser, updateUser } from "../../state/actions/user-action
 import { changeKeyboardTarget } from "../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
-    const users = state.users.list.map(({id, name, createdBy, timestamp}) => ({
+    const users = state.users.list.map(({id, name, createdBy, timestamp}) => {
+        const foundUser = state.users.list.find(user => user.id === createdBy);
+        return {
             id,
             name,
-            createdBy: state.users.list.find(user => user.id === createdBy).name,
+            createdBy: foundUser ? foundUser.name : 'Niemand',
             timestamp
-        }));
+        };
+    });
     return {
         users,
         loggedInUser: state.status.loggedInUser

@@ -8,10 +8,12 @@ function createWindow() {
         width: 1024,
         height: 768,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            devTools: false
         }
     });
-
+    mainWindow.setMenu(null);
+    mainWindow.setFullScreen(true);
     mainWindow.loadFile(__dirname + '/index.html');
 }
 

@@ -1,5 +1,6 @@
 import { USER_ADD, USER_DELETE, USER_UPDATE, USER_LOAD, STATUS_SAVE_COMPLETE, STATUS_LOADING } from "../actions";
 import { DataBase } from "../db";
+import { hash } from "../../hash";
 
 export function loadUsers() {
     return (dispatch) => {
@@ -23,11 +24,11 @@ export function loadUsers() {
 }
 
 export function addUser(name, password, createdBy) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({ type: STATUS_LOADING });
         const newUser = {
             name,
-            password,
+            password: await hash(password),
             createdBy,
             timestamp: Date.now()
         };
@@ -65,7 +66,7 @@ export function updateUser(id, name, password, editedBy) {
         const updatedUser = {
             id,
             name,
-            password,
+            password: hash(password),
             createdBy: editedBy,
             timestamp: Date.now()
         };

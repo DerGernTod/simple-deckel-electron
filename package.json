@@ -1,25 +1,27 @@
 {
-  "name": "brunch-app",
-  "description": "Brunch.io application",
+  "name": "simple-deckel-electron",
+  "productName": "Simple Deckel",
+  "description": "A sportsclub customer management tool",
+  "main": "./public/index.js",
   "private": true,
-  "author": "Brunch",
-  "version": "0.0.1",
-  "repository": "",
+  "author": "Gernot Raudner",
+  "version": "2.0.0",
+  "repository": "https://github.com/DerGernTod/simple-deckel-electron",
   "scripts": {
     "start": "brunch watch --server",
     "build": "brunch build --production",
-    "electron": "electron ./public"
+    "electron": "electron ./public",
+    "pack": "electron-packager ./ simple-deckel-electron --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds --version-string.CompanyName=TheNode --version-string.FileDescription=TheNode --version-string.ProductName=\"Simple Deckel Electron\""
   },
   "dependencies": {
-    "babel-preset-env": "^1.7.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
-    "redux": "^4.0.1",
-    "replacement-brunch": "^2.0.5"
+    "redux": "^4.0.1"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.7.0",
     "auto-reload-brunch": "^2",
     "babel-brunch": "~6.0",
     "babel-preset-latest": "^6",
@@ -31,6 +33,7 @@
     "dexie": "^2.0.4",
     "electron": "^5.0.1",
     "electron-debug": "^3.0.0",
+    "electron-packager": "^14.0.0",
     "react-simple-keyboard": "^1.23.0",
     "redux-thunk": "^2.3.0",
     "simple-keyboard-layouts": "^1.5.2",
