@@ -2,8 +2,8 @@
 exports.files = {
   javascripts: {
     joinTo: {
-      'vendor.js': /^(?!app)/,
-      'app.js': /^app/
+      'js/vendor.js': /^(?!app)/,
+      'js/app.js': /^app/
     }
   },
   stylesheets: {joinTo: 'app.css'}
@@ -21,6 +21,12 @@ exports.plugins = {
       ],
       'stage-3',
       'react'
-    ],
+    ]
+  },
+  replacement: {
+    replacements: [{
+      files: [/electron\.js$/],
+      match: {find: /(?!_)\b(require)(?!_|d)/gm, replace: 'MY_REQUIRE'}
+    }]
   }
 };

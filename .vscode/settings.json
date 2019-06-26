@@ -1,0 +1,6 @@
+{
+    "less.compile": {
+        "main": "./application.less",
+        "relativeUrls": true
+    }
+}
