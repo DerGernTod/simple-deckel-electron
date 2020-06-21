@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
             name,
             price,
             category,
-            createdBy: state.users.list.find(user => user.id === createdBy).name,
+            createdBy: createdBy && state.users.list.find(user => user.id === createdBy).name,
             timestamp
         }));
     return {

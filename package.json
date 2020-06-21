@@ -11,7 +11,8 @@
     "start": "brunch watch --server",
     "build": "brunch build --production",
     "electron": "electron ./public",
-    "pack": "electron-packager ./ simple-deckel-electron --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds --version-string.CompanyName=TheNode --version-string.FileDescription=TheNode --version-string.ProductName=\"Simple Deckel Electron\""
+    "pack": "electron-packager ./ simple-deckel-electron --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds --version-string.CompanyName=TheNode --version-string.FileDescription=TheNode --version-string.ProductName=\"Simple Deckel Electron\"",
+    "pack-pi": "electron-packager ./ simple-deckel-electron --overwrite --asar=true --platform=linux --arch=armv7l --prune=true --out=release-builds --version-string.CompanyName=TheNode --version-string.FileDescription=TheNode --version-string.ProductName=\"Simple Deckel Electron\""
   },
   "dependencies": {
     "react": "^16.8.3",

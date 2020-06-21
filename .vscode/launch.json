@@ -21,7 +21,9 @@
             "request": "launch",
             "name": "Electron Main",
             "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-            "program": "${workspaceFolder}/public/electron.js",
+            "runtimeArgs": [
+                "${workspaceFolder}/public"
+            ],
             "port": 9229
         }
     ]

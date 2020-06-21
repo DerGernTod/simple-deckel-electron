@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+const electron = nodeRequire("electron").remote;
+const fs = nodeRequire("fs").promises
 import {NavLink} from 'react-router-dom';
 import { VKeyboardTextInputContainer } from "../../containers/utils/vkeyboard-text-input-container";
 import { ConfirmPopup } from '../utils/popups/ConfirmPopup';
@@ -81,6 +83,35 @@ export class CustomerScreen extends React.Component {
     }
     resetKeyboard() {
         this.props.updateKeyboardTarget('', () => void 0, '');
+    }
+    async showExportDialog() {
+        const resultPath = await electron.dialog.showSaveDialog({
+            filters: [
+                { 
+                    name: "Comma-separated values",
+                    extensions: ["csv"]
+                }
+            ],
+            title: `Kundendaten_${new Date().toISOString()}`
+        });
+        if (!resultPath) {
+            return;
+        }
+        const SEPARATOR = ";";
+        const res = this.props.customers.map(({ name, total, lastOrder, lastPayment }) => [
+            name,
+            total.toFixed(2),
+            lastOrder ? new Date(lastOrder).toISOString() : "Nie",
+            lastPayment ? new Date(lastPayment).toISOString() : "Nie"
+        ].join(SEPARATOR));
+        res.unshift(["Name", "Gesamt", "Letzte Bestellung", "Letzte Zahlung"].join(SEPARATOR))
+        const csv = res.join("\n");
+        try {
+            await fs.writeFile(resultPath, csv, "UTF-8");
+            alert(`Datei ${resultPath} gespeichert!`);
+        } catch (e) {
+            alert(`Fehler beim Schreiben der Datei: ${e.message}`);
+        }
     }
     render() {
         if (this.props.loggedInUser.id < 0) {
@@ -184,6 +215,7 @@ export class CustomerScreen extends React.Component {
                             <button className='full-height' onClick={() => this.showAddPopup()}>+</button>
                         </div>
                         <div className="flex">
+                            <button className='full-height' onClick={() => this.showExportDialog()}>Exportieren</button>
                             <NavLink to='/overview' >
                                 <button className='full-height full-width'>Zurück</button>
                             </NavLink>

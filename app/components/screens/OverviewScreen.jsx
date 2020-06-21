@@ -74,8 +74,7 @@ export class OverviewScreen extends React.Component {
                             <button className='full-height' onClick={() => this.redirect('/users')}>Benutzer verwalten</button>
                         </div>
                         <div className="flex">
-                            <div>{this.props.loading ? 'Loading...' : 'Done!'}</div>
-                            <button onClick={() => window.close()}>Beenden</button>
+                            <div>{this.props.loading ? 'Lade...' : ''}</div>
                         </div>
                     </div>
                 </div>
