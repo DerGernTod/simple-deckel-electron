@@ -4,15 +4,19 @@ import { addCustomer, deleteCustomer, loadCustomers, updateCustomer } from "../.
 import { changeKeyboardTarget } from "../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
-    const customers = state.customers.list.map(({id, name, total, createdBy, timestamp, lastOrder, lastPayment}) => ({
+    const customers = state.customers.list.map(({id, name, total, createdBy, timestamp, lastOrder, lastPayment}) => {
+        const creator = state.users.list.find(user => user.id === createdBy);
+
+        return {
             id,
             name,
             total,
-            createdBy: createdBy && state.users.list.find(user => user.id === createdBy).name,
+            createdBy: creator ? creator.name : "Unbekannt",
             timestamp,
             lastOrder,
             lastPayment
-        }));
+        };
+    });
     return {
         customers,
         loggedInUser: state.status.loggedInUser

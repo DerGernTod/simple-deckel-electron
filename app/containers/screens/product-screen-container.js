@@ -4,14 +4,17 @@ import { addProduct, deleteProduct, loadProducts, updateProduct } from "../../st
 import { changeKeyboardTarget } from "../../state/actions/status-actions";
 
 const mapStateToProps = (state) => {
-    const products = state.products.list.map(({id, name, price, category, createdBy, timestamp}) => ({
-            id,
+    const products = state.products.list.map(({id, name, price, category, createdBy, timestamp}) => {
+        const creator = state.users.list.find(user => user.id === createdBy);
+
+        return {id,
             name,
             price,
             category,
-            createdBy: createdBy && state.users.list.find(user => user.id === createdBy).name,
+            createdBy: creator ? creator.name : "Unbekannt",
             timestamp
-        }));
+        };
+    });
     return {
         products,
         loggedInUser: state.status.loggedInUser
