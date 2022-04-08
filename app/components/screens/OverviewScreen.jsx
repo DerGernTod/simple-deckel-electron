@@ -72,6 +72,7 @@ export class OverviewScreen extends React.Component {
                             <button className='full-height' onClick={() => this.redirect('/customers')}>Kunden verwalten</button>
                             <button className='full-height' onClick={() => this.redirect('/products')}>Produkte verwalten</button>
                             <button className='full-height' onClick={() => this.redirect('/users')}>Benutzer verwalten</button>
+                            <button className='full-height' onClick={() => this.redirect('/revenue')}>Umsätze verwalten</button>
                         </div>
                         <div className="flex">
                             <div>{this.props.loading ? 'Lade...' : ''}</div>

@@ -9,6 +9,7 @@ export const ITEMS_ADD = 'ITEM_ADD';
 export const ITEMS_LIST = 'ITEM_LIST';
 export const PAYMENT_ADD = 'PAYMENT_ADD';
 export const PAYMENT_LIST = 'PAYMENT_LIST';
+export const PAYMENT_LIST_BY_DATE = 'PAYMENT_LIST_BY_DATE';
 export const CUSTOMER_CLEAR = 'CUSTOMER_CLEAR';
 export const CUSTOMER_LOAD = 'CUSTOMER_LOAD';
 export const USER_ADD = 'USER_ADD';

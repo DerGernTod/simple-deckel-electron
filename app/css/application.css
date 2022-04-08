@@ -163,6 +163,9 @@ button {
 .flex {
   display: flex;
 }
+.j-center {
+  justify-content: center;
+}
 .full-height {
   height: 100%;
 }
@@ -185,7 +188,8 @@ input[type=text],
 input[type=password],
 input[type=number],
 select,
-option {
+option,
+input[type=datetime-local] {
   height: 40px;
   padding: 5px;
   font-size: 13pt;
@@ -194,7 +198,8 @@ input[type=text].focused,
 input[type=password].focused,
 input[type=number].focused,
 select.focused,
-option.focused {
+option.focused,
+input[type=datetime-local].focused {
   border: 2px solid lightskyblue;
 }
 table {
@@ -491,6 +496,9 @@ tr.controls:active {
 }
 .overview-controls > div:last-child {
   text-align: right;
+}
+.text-center {
+  text-align: center;
 }
 .block {
   display: block;

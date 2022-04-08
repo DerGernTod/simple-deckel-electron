@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 const electron = nodeRequire("electron").remote;
 const fs = nodeRequire("fs").promises
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { VKeyboardTextInputContainer } from "../../containers/utils/vkeyboard-text-input-container";
 import { ConfirmPopup } from '../utils/popups/ConfirmPopup';
 export class CustomerScreen extends React.Component {

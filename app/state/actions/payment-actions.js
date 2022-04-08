@@ -1,6 +1,35 @@
-import { PAYMENT_ADD, STATUS_LOADING, STATUS_SAVE_COMPLETE, PAYMENT_LIST } from "../actions";
+import { PAYMENT_ADD, STATUS_LOADING, STATUS_SAVE_COMPLETE, PAYMENT_LIST, PAYMENT_LIST_BY_DATE } from "../actions";
 import { DataBase } from "../db";
 import { DB_LIMITS } from "../../constants";
+
+export function loadPaymentsInTimeframe(from = 0, to = Date.now(), offset = 0, limit = 0) {
+    return async dispatch => {
+        dispatch({
+            type: STATUS_LOADING
+        });
+        try {
+            const payments = await DataBase.table('payments').where('timestamp').between(from, to).reverse().sortBy('timestamp');
+            dispatch({
+                type: PAYMENT_LIST_BY_DATE,
+                payload: payments.reduce((payload, payment, curIndex) => {
+                    // skip all indizes before offset
+                    if (curIndex < offset) {
+                        return payload;
+                    }
+                    // skip all following payments in case a limit is set and we reached it, and increase "remainingNext"
+                    if (limit && payload.list.length >= limit) {
+                        payload.remainingPrev++;
+                        return payload;
+                    }
+                    payload.list.push(payment);
+                    return payload;
+                }, { remainingNext: offset, remainingPrev: 0, list: [] })
+            });
+        } finally {
+            dispatch({ type: STATUS_SAVE_COMPLETE });
+        }
+    }
+}
 
 export function loadPayments(customerId, offset = 0, limit = 0) {
     return async dispatch => {

@@ -13,6 +13,7 @@ import { UserScreenContainer } from './containers/screens/user-screen-container'
 import { initialStatusState } from './state/reducers/status';
 import { loadUsers } from './state/actions/user-actions';
 import { LoadingPopupContainer } from './containers/utils/popups/loading-popup-container';
+import { RevenueScreenContainer } from './containers/screens/revenue-screen-container';
 
 const store = createStore(rootReducer, {
   users: {list: []},
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <Route path="/customers" component={CustomerScreenContainer} />
             <Route path="/products" component={ProductScreenContainer} />
             <Route path="/users" component={UserScreenContainer} />
+            <Route path="/revenue" component={RevenueScreenContainer} />
             <Route component={OverviewScreenContainer} />
           </Switch>
           <GermanKeyboardContainer />

@@ -1,4 +1,4 @@
-import { PAYMENT_LIST, PAYMENT_ADD, CUSTOMER_CLEAR } from "../actions";
+import { PAYMENT_LIST, PAYMENT_ADD, CUSTOMER_CLEAR, PAYMENT_LIST_BY_DATE } from "../actions";
 
 const initialState = {
     list: [{
@@ -15,6 +15,7 @@ export function payments(state = initialState, action) {
     switch(action.type) {
         case PAYMENT_ADD:
         case PAYMENT_LIST:
+        case PAYMENT_LIST_BY_DATE:
             return {
                 ...state,
                 list: action.payload.list,
