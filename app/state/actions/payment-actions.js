@@ -2,7 +2,7 @@ import { PAYMENT_ADD, STATUS_LOADING, STATUS_SAVE_COMPLETE, PAYMENT_LIST, PAYMEN
 import { DataBase } from "../db";
 import { DB_LIMITS } from "../../constants";
 
-export function loadPaymentsInTimeframe(from = 0, to = Date.now(), offset = 0, limit = 0) {
+export function loadPaymentsInTimeframe(from = 0, to = 0, offset = 0, limit = 0) {
     return async dispatch => {
         dispatch({
             type: STATUS_LOADING
